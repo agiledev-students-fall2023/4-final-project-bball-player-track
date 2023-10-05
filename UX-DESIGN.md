@@ -14,7 +14,7 @@ This is the app map showing the overarching hiearchy and how each page is connec
 This is the home screen that displays the landing page interface. The daily game scores and the Top Players of the week can be viewed here. The top is the indexes that is linked to the other pages.
 
 ## Players Page
-![PlayersPage](./ux-design/PlayersPage.png)
+![Players](./ux-design/Players.png)
 
 This is the players page, where there is a list of all the players in the NBA as well as the average of their statistics displayed. You can filter by team on this page.
 
@@ -46,4 +46,4 @@ This is the Game statistics page where it shows you the statistics by season and
 ## Favorites Page
 ![Favorites](./ux-design/Favorites.png)
 
-This is the favorites page where your favorite players will be listed, this requires a login which needs to be setup
+This is the favorites page where your favorite players and their respective season statistics will be listed, this requires a login which needs to be setup.
