@@ -2,7 +2,7 @@
 https://www.figma.com/proto/NNK5lFqMqIp3tOa7gYFybn/Prototype?node-id=1-2&mode=design&t=Slefx6GD5tJuYn87-1
 
 ## App Map
-![AppMap] (ux-design/AppMap.png)
+![AppMap] (./ux-design/AppMap.png)
 
 This is the app map showing the overarching hiearchy and how each page is connected.
 
