@@ -1,8 +1,11 @@
-# Project Repository
+# BBall Player Tracker
 
-This repository will be used for team projects.
+## Overview
+This project is a MERN stack web application which will allow users to access basketball statistics from current NBA games as well as an archive of past statistics. Statistics will be up-to-date and presented in a visually satisfying manner, and users will be able to customize their experience by choosing favorite players or team. 
 
-Several sets of instructions are included in this repository. They should each be treated as separate assignments with their own due dates and sets of requirements.
+## Product Vision Statement
+Our vision is to create a basketball statistics app which is fun and easy to use and provides all of the necessary data in a streamlined, visually appealing way. We envision a user experience geared towards passionate NBA fans who love basketball and want to dig deeper, and our app will enhance the viewing experience for these fans by giving them quick access to the statistics they want, without unnecessary distractions.
+
 
 1. See the [App Map & Wireframes](instructions-0a-app-map-wireframes.md) and [Prototyping](./instructions-0b-prototyping.md) instructions for the requirements of the initial user experience design of the app.
 
