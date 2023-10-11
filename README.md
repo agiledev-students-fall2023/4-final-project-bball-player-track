@@ -9,10 +9,10 @@ Our vision is to create a basketball statistics app which is fun and easy to use
 ## Team Members
 Click on names to view github accounts.
 
-[Terrence Chen](https://github.com/tchen0125)
-[Michael Shu](https://github.com/michael-shu)
-[Michael Smoyer](https://github.com/mksmoyer)
-[Jalen Zhang](https://github.com/jialinzhang010)
+[Terrence Chen](https://github.com/tchen0125)\
+[Michael Shu](https://github.com/michael-shu)\
+[Michael Smoyer](https://github.com/mksmoyer)\
+[Jalen Zhang](https://github.com/jialinzhang010)\
 [Eric Zhu](https://github.com/Erikccc)
 
 If you wish to contribute to the project, please read the [Contributing instructions](./CONTRIBUTING.md).
