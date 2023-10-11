@@ -3,7 +3,7 @@
 
 ## Team norms
 All developers contributing to the project should be an active part of the team. Our primary mode of communication will be on our discord channel, so it is crucial that all team members check this channel frequently. Any issues should be directed to discord so that all team members can see them and whoever is available and able to help should respond to the issue. The resources outside of our team, specifically the professor and the tutor, should be contacted for help only after all team members have failed to solve a problem internally, or if there are any irreconcilable disagreements on vision or approach.\
-Our sprints are two weeks long, and our team standups at INSERT TIME. It is expected that all developers attend all standups to keep everyone on the same page with current progress and issues.\
+Our sprints are two weeks long, and our team standups are at INSERT TIME. It is expected that all developers attend all standups to keep everyone on the same page with current progress and issues.\
 All team members should use vscode for editing to ensure consistent formatting. Code should be descriptive and concise, and should be reviewed by other developers before merging to main, using the git feature branch worklow method described below. Commits should be small and limited to individual features or fixes, and only working code should be pushed. 
 
 ## How to contribute using feature branch version control workflow
