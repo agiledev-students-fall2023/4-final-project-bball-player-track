@@ -6,7 +6,7 @@
 All developers contributing to the project should be an active part of the team. Our primary mode of communication will be on our discord channel, so it is crucial that all team members check this channel frequently. Any issues should be directed to discord so that all team members can see them and whoever is available and able to help should respond to the issue as soon as possible. We will reach consensus when there are disagreements on direction by voting in our channel. If a member is failing to deliver on their obligations to the team, please refer to the agreements in **Daily Standups**. The resources outside of our team, specifically the professor and the tutor, should be contacted for help only after all team members have failed to solve a problem internally, or if there are any irreconcilable disagreements on vision or approach.
 
 ### Sprint Cadence
-Our sprints are two weeks long, and our team standups are at INSERT TIME. It is expected that all developers attend all standups to keep everyone on the same page with current progress and issues.
+Our sprints are two weeks long, and our team standups are at 9:00PM every Tuesday and Thursday. It will be 15 minutes long. It is expected that all developers attend all standups to keep everyone on the same page with current progress and issues.
 ### Daily Standups
 We will adhere strictly to the agreements. First, members will not cover for other members who do not participate. Secondly, if a member who makes no progress on a task for two standups or more in a row, he will be reported to management (professor and TAs).
 ### Coding Standards
