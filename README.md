@@ -17,3 +17,5 @@ Click on names to view github accounts.
 
 If you wish to contribute to the project, please read the [Contributing instructions](./CONTRIBUTING.md).
 
+## Additional Links
+You can find our App Map and Wire Frames in [UX Design](./UX-DESIGN.md).
