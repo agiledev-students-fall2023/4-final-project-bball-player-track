@@ -13,27 +13,28 @@ We will adhere strictly to the agreements. First, members will not cover for oth
 All team members should use [Visual Studio Code](https://code.visualstudio.com/) for editing to ensure consistent formatting. Code should be descriptive and concise, and should be reviewed by other developers before merging to main, using the git feature branch worklow method described below. Commits should be small and limited to individual features or fixes, clearly indicating the changes in the message, and only working code should be pushed. \
 Also, it's imperative to recognize the importance of proper citation when using code from external sources. Not only does this practice show respect to the original authors, but it also ensures that one's work remains transparent and trustworthy. Every piece of code taken from an external source should be diligently attributed, providing clear acknowledgment of its origin. This establishes integrity in one's work and avoids potential intellectual property disputes.
 
-## How to contribute using feature branch version control workflow
+## Contributions
 Contributions are always welcome. 
+### Environment Setup
+1. Install [Node.js](https://nodejs.org/en).
 ### Build
-#### Build and launch the back end
+#### Build the back end
 
 1. Navigate into the `back-end` directory
 1. Run `npm install` to install all dependencies listed in the `package.json` file.
-1. Run `npm start` to launch the back-end server
 
-#### Build and launch the front end
+#### Build the front end
 
 1. Navigate into the `front-end` directory
 1. Run `npm install` to install all dependencies listed in the `package.json` file.
-1. Run `npm start` to launch the React.js server
 
 
+### Git Workflow
 In order to edit this repository, follow these steps.
 > - Clone it to your computer. 
 > - Before making changes, pull the latest code from the shared repository, then create and check out a new branch. Your coding style should be consistent with ours.
 > - Make your changes, add and commit the changes to your local branch, then pull the main branch of the shared repository and merge it with the local branch. 
 > - Finally, push your branch to the shared repository and create a pull request for this branch in github.
-
-One of our team members will then have to pull and review this new code before it is merged with main. All code must be reviewed, and none should be added directly to the main branch without being seen by other team members. Changes should all be relevant to a specific user story, task, or spike, which should be mentioned in the commit message after changes are made. Additionally, developers should update the github task board by moving tasks or spikes to "In Process" while working, "Awaiting Review" after making a pull request, and "Done" once a change is merged to main. 
+### Rules of Contributing
+One of our team members will then pull and review this new code before it is merged with main. All code will be reviewed, and none will be added directly to the main branch without being seen by other team members. Changes should all be relevant to a specific user story, task, or spike, which should be mentioned in the commit message after changes are made. Additionally, developers should update the github task board by moving tasks or spikes to "In Process" while working, "Awaiting Review" after making a pull request, and "Done" once a change is merged to main. 
 
