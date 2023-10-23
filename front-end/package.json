@@ -1,0 +1,11 @@
+{
+  "name": "front-end",
+  "version": "1.0.0",
+  "description": "The front-end of your project will live in this directory by the end of Sprint 1.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
