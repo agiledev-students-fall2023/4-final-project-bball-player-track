@@ -1,6 +1,7 @@
 import './Favorites.css'
 import React from 'react';
 
+/* add import */
 const FavoritesPage = () => {
     return (
         <div className="favoritesPage">
