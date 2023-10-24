@@ -5,7 +5,6 @@ const FavoritesPage = () => {
     return (
         <div className="favoritesPage">
             {/* Header */}
-            <header className="header">
                 <h1>BBall Player Tracker</h1>
                 <nav>
                     <a href="/players">Players</a>
@@ -13,7 +12,6 @@ const FavoritesPage = () => {
                     <a href="/games">Games</a>
                     <a href="/favorites" className="active">Favorites</a>
                 </nav>
-            </header>
             
             {/* Page Title */}
             <h2>Favorites</h2>
