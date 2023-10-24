@@ -1,12 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
-import Home from './Home'
-import Header from './Header'
-import Footer from './Footer'
+
 import Favorites from './Favorites';
 
 import Players from './Players';
-
+/*add import */
 
 const App = props => {
   return (
