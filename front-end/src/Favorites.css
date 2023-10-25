@@ -1,0 +1,24 @@
+/* FavoritesPage.css */
+
+.favoritesPage {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 10px;
+}
+
+nav a {
+    margin-right: 10px;
+}
