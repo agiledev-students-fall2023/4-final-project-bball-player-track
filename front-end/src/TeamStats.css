@@ -1,0 +1,64 @@
+/* Center the table horizontally */
+
+@media (max-width: 768px) {
+
+
+
+
+    .teamStats {
+        display: flex;
+        flex-direction: column;
+    }
+
+    img {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Style the table */
+}
+
+h2 {
+    padding-top: 20px;
+    padding-bottom: 0;
+}
+
+nav a {
+    text-decoration: none; /* Remove underlines from links */
+    margin: 10px; /* Add space around links */
+    padding: 10px 15px; /* Add padding inside links */
+    border: 1px solid #333; /* Add a border around links */
+    border-radius: 5px; /* Round the corners of the links */
+    background-color: #555; /* Set a background color */
+    color: #fff; /* Set text color to white */
+}
+
+/* Style the active link */
+nav a.active {
+}
+table {
+    max-width: 100%;
+    border-collapse: collapse;
+    width: 700px;
+    margin: 20px auto; /* Center the table vertically */
+    background-color: #f5f5f5;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background-color: #333;
+    color: #fff;
+}
+
+table td {
+    background-color: #fff;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
