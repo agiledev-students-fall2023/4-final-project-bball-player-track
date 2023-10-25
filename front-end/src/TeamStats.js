@@ -31,14 +31,6 @@ const TeamStats = () => {
     return (
         <div className="teamStats">
             
-            <h1>BBall Player Tracker</h1>
-            <nav>
-                <a href="/players">Players</a>
-                <a href="/teams">Teams</a>
-                <a href="/games">Games</a>
-                <a href="/favorites" className="active">Favorites</a>
-            </nav>
-            
             
             <h2>Team Name Here</h2>
             
