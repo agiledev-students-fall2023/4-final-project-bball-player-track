@@ -70,8 +70,6 @@ const TeamStats = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* Rows */}
-                    {/* Replace the following with your actual player data */}
                     <tr>
                         <td>20</td>
                         <td>15</td>
@@ -87,7 +85,6 @@ const TeamStats = () => {
                         <td>3.1</td>
                         <td>2.5</td>
                     </tr>
-                    {/* Add more rows as needed */}
                 </tbody>
             </table>
 
