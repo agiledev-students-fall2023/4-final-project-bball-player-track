@@ -29,7 +29,7 @@ const Teams = () => {
                 <tbody>
                     {data.map((team, index) => (
                         <tr key={index}>
-                            {/* Updated Link to just point to "/team-stats" */}
+                            {}
                             <td><Link to="/team-stats">{team["[Teams]"]}</Link></td>
                             <td>{team["[Wins]"]}</td>
                             <td>{team["[Losses]"]}</td>
