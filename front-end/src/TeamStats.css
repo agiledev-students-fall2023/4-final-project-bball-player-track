@@ -1,4 +1,3 @@
-/* Center the table horizontally */
 
 @media (max-width: 768px) {
 
@@ -14,9 +13,9 @@
         display: flex;
         justify-content: center;
     }
-
-    /* Style the table */
 }
+  
+
 
 h2 {
     padding-top: 20px;

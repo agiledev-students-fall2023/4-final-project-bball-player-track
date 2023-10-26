@@ -1,5 +1,6 @@
 import './Favorites.css'
-import React from 'react';
+import React from 'react'
+import { Link } from 'react-router-dom';
 
 
 const FavoritesPage = () => {
@@ -29,7 +30,11 @@ const FavoritesPage = () => {
                 <tbody>
                     {Array(12).fill().map((_, index) => (
                         <tr key={index}>
-                            <td>Player</td>
+                            <td>
+                            <Link to={`/player-stats`}>
+                                    {"Player"}
+                            </Link>
+                            </td>
                             <td></td>
                             <td></td>
                             <td></td>

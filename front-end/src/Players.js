@@ -30,7 +30,11 @@ const Players = () => {
                 <tbody>
                     {data.map((player, index) => (
                         <tr key={index}>
-                            <td>{player["[Players]"]}</td>
+                            <td>
+                            <Link to={`/player-stats`}>
+                                    {player["[Players]"]}
+                            </Link>
+                            </td>
                             <td>{player["[Points Per Game]"]}</td>
                             <td>{player["[Assists Per Game]"]}</td>
                             <td>{player["[Steals Per Game]"]}</td>
