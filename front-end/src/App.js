@@ -1,13 +1,15 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import './App.css'
+// App.js
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
 
 import FavoritesPage from './Favorites';
-import TeamStats from './TeamStats'
+import TeamStats from './TeamStats';
 import Home from './Home';
 import Header from './Header';
 import PlayerStats from './PlayerStats';
 //import Players from './Players';
 /*add import */
+import Teams from './Teams'; // Import the Teams component
 
 const App = props => {
   return (
@@ -19,8 +21,8 @@ const App = props => {
             {/* a route to see the favorites */}
             <Route path="/" element={<Home />} />
             <Route path="/favorites" element={<FavoritesPage />} />
-            <Route path="/TeamStats" element={<TeamStats />} />
-            <Route path="/PlayerStats" element={<PlayerStats />} />
+            <Route path="/team-stats" element={<TeamStats />} />
+            <Route path="/teams" element={<Teams />} /> {/* Add a new route for Teams */}
           </Routes>
         </main>
       </Router>
@@ -28,4 +30,4 @@ const App = props => {
   )
 }
 
-export default App
+export default App;
