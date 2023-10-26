@@ -36,3 +36,13 @@
 .teams table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+
+a {
+    text-decoration: none;
+    color: inherit; /* Inherit the color from the parent */
+}
+
+/* Change link color to blue when hovered */
+a:hover {
+    color: blue;
+}

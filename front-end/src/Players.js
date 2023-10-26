@@ -8,7 +8,7 @@ const Players = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get('https://my.api.mockaroo.com/players.json?key=171b3220');
+            const result = await axios.get('https://my.api.mockaroo.com/players.json?key=85d56db0');
             setData(result.data);
         };
         fetchData();
