@@ -1,5 +1,8 @@
 .top-players-container {
     display: flex;
+    width: 700px;
+    justify-content: center;
+    margin: 0 auto;
     border: 2px solid black;
     padding: 10px;
 }
@@ -24,3 +27,15 @@
 .button-link {
     margin-right: 10px;
 }
+
+
+a {
+    text-decoration: none;
+    color: inherit; /* Inherit the color from the parent */
+}
+
+/* Change link color to blue when hovered */
+a:hover {
+    color: blue;
+}
+
