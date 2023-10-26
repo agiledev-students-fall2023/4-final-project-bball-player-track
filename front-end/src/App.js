@@ -5,6 +5,7 @@ import FavoritesPage from './Favorites';
 import TeamStats from './TeamStats'
 import Home from './Home';
 import Header from './Header';
+import PlayerStats from './PlayerStats';
 //import Players from './Players';
 /*add import */
 
@@ -19,6 +20,7 @@ const App = props => {
             <Route path="/" element={<Home />} />
             <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="/TeamStats" element={<TeamStats />} />
+            <Route path="/PlayerStats" element={<PlayerStats />} />
           </Routes>
         </main>
       </Router>
