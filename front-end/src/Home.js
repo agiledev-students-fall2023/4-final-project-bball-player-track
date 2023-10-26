@@ -14,11 +14,11 @@ const Home = props => {
                 <div className="players-list">
                     <div className="header">Top Players</div>
                     <ul>
-                        <li><Link to="playerStats" className="player">Player 1</Link></li>
-                        <li><Link to="playerStats" className="player">Player 2</Link></li>
-                        <li><Link to="playerStats" className="player">Player 3</Link></li>
-                        <li><Link to="playerStats" className="player">Player 4</Link></li>
-                        <li><Link to="playerStats" className="player">Player 5</Link></li>
+                        <li><Link to="player-stats" className="player">Player 1</Link></li>
+                        <li><Link to="player-stats" className="player">Player 2</Link></li>
+                        <li><Link to="player-stats" className="player">Player 3</Link></li>
+                        <li><Link to="player-stats" className="player">Player 4</Link></li>
+                        <li><Link to="player-stats" className="player">Player 5</Link></li>
                     </ul>
                 </div>
                 <div className="player-stats">
