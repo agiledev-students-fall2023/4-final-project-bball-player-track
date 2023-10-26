@@ -8,7 +8,7 @@ const Teams = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get('https://my.api.mockaroo.com/AllTeams.json?key=171b3220');
+            const result = await axios.get('https://my.api.mockaroo.com/AllTeams.json?key=85d56db0');
             setData(result.data);
         };
         fetchData();
