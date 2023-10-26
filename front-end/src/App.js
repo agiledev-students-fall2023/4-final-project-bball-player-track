@@ -22,6 +22,7 @@ const App = props => {
             <Route path="/" element={<Home />} />
             <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="/team-stats" element={<TeamStats />} />
+            <Route path="/player-stats" element={<PlayerStats />} />
             <Route path="/teams" element={<Teams />} /> {/* Route for Teams */}
             <Route path="/players" element={<Players />} /> {/* Route for Players */}
           </Routes>
