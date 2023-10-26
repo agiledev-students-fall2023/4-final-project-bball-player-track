@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';  // Import Link from react-router-dom
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import './Header.css';
 
 const Header = props => {
@@ -9,13 +9,14 @@ const Header = props => {
                 <h1>BBall Player Tracker</h1>
             </Link>
             <nav>
-                <Link to="/players">Players</Link>
-                <Link to="/teams">Teams</Link>
-                <Link to="/games">Games</Link>
-                <Link to="/favorites" className="active">Favorites</Link>
+                <Link to="/players" className="nav-link">Players</Link>
+                <Link to="/teams" className="nav-link">Teams</Link>
+                <Link to="/games" className="nav-link">Games</Link>
+                <Link to="/favorites" className="nav-link">Favorites</Link>
             </nav>
         </div>
     );
 }
 
 export default Header;
+

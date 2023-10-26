@@ -1,4 +1,3 @@
-// App.js
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
@@ -7,6 +6,7 @@ import TeamStats from './TeamStats';
 import Home from './Home';
 import Header from './Header';
 import Teams from './Teams'; // Import the Teams component
+import Players from './Players'; // Import the Players component
 
 const App = props => {
   return (
@@ -19,7 +19,8 @@ const App = props => {
             <Route path="/" element={<Home />} />
             <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="/team-stats" element={<TeamStats />} />
-            <Route path="/teams" element={<Teams />} /> {/* Add a new route for Teams */}
+            <Route path="/teams" element={<Teams />} /> {/* Route for Teams */}
+            <Route path="/players" element={<Players />} /> {/* Route for Players */}
           </Routes>
         </main>
       </Router>
