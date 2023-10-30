@@ -4,15 +4,17 @@ import './Header.css';
 
 const Header = props => {
     return (
-        <div className="Header">
-            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h1>BBall Player Tracker</h1>
+        <div className="navbar">
+            <Link to="/">
+                <h1 className='header'>BBall Player Tracker</h1>
             </Link>
             <nav>
-                <Link to="/players" className="nav-link">Players</Link>
-                <Link to="/teams" className="nav-link">Teams</Link>
-                <Link to="/games" className="nav-link">Games</Link>
-                <Link to="/favorites" className="nav-link">Favorites</Link>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Basketball.png"
+                alt=""/>
+                <Link to="/players">Players</Link>
+                <Link to="/teams">Teams</Link>
+                <Link to="/games">Games</Link>
+                <Link to="/favorites">Favorites</Link>
             </nav>
         </div>
     );
