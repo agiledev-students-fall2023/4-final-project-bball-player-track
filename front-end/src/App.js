@@ -10,7 +10,7 @@ import PlayerStats from './PlayerStats';
 /*add import */
 import Teams from './Teams'; // Import the Teams component
 import Players from './Players'; // Import the Players component
-import Games from './Games';
+import Game from './components/Game.mjs';
 
 const App = props => {
   return (
@@ -24,7 +24,7 @@ const App = props => {
             <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="/team-stats" element={<TeamStats />} />
             <Route path="/player-stats" element={<PlayerStats />} />
-            <Route path = "/games" element = {<Games/>}/>
+            <Route path = "/games" element = {<Game/>}/>
             <Route path="/teams" element={<Teams />} /> {/* Route for Teams */}
             <Route path="/players" element={<Players />} /> {/* Route for Players */}
           </Routes>
