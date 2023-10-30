@@ -1,11 +1,14 @@
+
 import './TeamStats.css';
 import React from 'react';
+
 
 const FavoritesPage = () => {
     const samplePlayerData = {
         name: 'Player',
         gp: 20,
         gs: 15,
+      
         min: '30:45',
         pts: 18.5,
         or: 1.2,
@@ -22,6 +25,7 @@ const FavoritesPage = () => {
     const rows = Array(12).fill(samplePlayerData);
 
     return (
+
         <div className="teamStats">
             {/* Header */}
             <h1>BBall Player Tracker</h1>
@@ -31,6 +35,7 @@ const FavoritesPage = () => {
                 <a href="/games">Games</a>
                 <a href="/favorites" className="active">Favorites</a>
             </nav>
+
 
             {/* Page Title */}
             <h2>Favorites</h2>
@@ -129,6 +134,7 @@ const FavoritesPage = () => {
                             <td>{player.to}</td>
                             <td>{player.pf}</td>
                             <td>{player.ast_to}</td>
+
                         </tr>
                     ))}
                 </tbody>

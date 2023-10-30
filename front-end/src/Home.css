@@ -1,0 +1,37 @@
+.top-players-container {
+    display: flex;
+    width: 700px;
+    justify-content: center;
+    margin: 0 auto;
+    border: 2px solid black;
+    padding: 10px;
+    text-decoration: none;
+}
+.introduction {
+    width: 30%;
+    margin: 0 auto;
+}
+.players-list, .player-stats {
+    flex: 1;
+    border: 2px solid black;
+    margin: 10px;
+    padding: 10px;
+    text-decoration: none;
+}
+.players-list ul {
+    list-style-type: decimal; 
+    padding-left: 20px;   
+}
+
+.player-name {
+    display: inline-block;
+    width: 200px;
+    text-align: left;
+}
+
+.player {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    text-decoration: none;
+}

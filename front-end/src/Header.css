@@ -1,0 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background-color: black;
+    display: flex;
+    align-items: center;
+    padding: 10px 50px;
+}
+nav {
+    display: flex;
+    align-items: center;
+}
+.header {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: normal;
+    border-bottom: none;
+    margin-right: auto; 
+}
+
+.navbar a {
+    color: white;
+    text-align: center;
+    padding: 0;
+    text-decoration: none;
+    font-size: 18px;
+    margin: 0 15px;
+    background-color: transparent; 
+    border: none; 
+}
+
+.navbar a:hover {
+    color: #ddd;
+    background-color: transparent; 
+}
+
+.navbar img {
+    width: 30px;
+    margin-right: 15px;
+}
