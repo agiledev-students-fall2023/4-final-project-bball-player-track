@@ -5,37 +5,33 @@
     margin: 0 auto;
     border: 2px solid black;
     padding: 10px;
+    text-decoration: none;
 }
-
+.introduction {
+    width: 30%;
+    margin: 0 auto;
+}
 .players-list, .player-stats {
     flex: 1;
     border: 2px solid black;
     margin: 10px;
     padding: 10px;
+    text-decoration: none;
+}
+.players-list ul {
+    list-style-type: decimal; 
+    padding-left: 20px;   
 }
 
-.header {
-    border-bottom: 2px solid black;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
+.player-name {
+    display: inline-block;
+    width: 200px;
+    text-align: left;
 }
 
 .player {
-    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-between;
     padding: 5px 0;
-}
-.button-link {
-    margin-right: 10px;
-}
-
-
-a {
     text-decoration: none;
-    color: inherit; /* Inherit the color from the parent */
 }
-
-/* Change link color to blue when hovered */
-a:hover {
-    color: blue;
-}
-
