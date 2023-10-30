@@ -5,50 +5,45 @@ import axios from 'axios';
 
 const Game = (props) => {
 
-    const [data, setData] = useState();
-    
+    const [data, setData] = useState([]);
+
     const options = {
-        method: 'GET',
-        url: 'https://api-nba-v1.p.rapidapi.com/games/statistics',
-        params: {id: '3333'},
-        headers: {
-          'X-RapidAPI-Key': '706d19fc97msh484bb59607a0b02p140386jsne4af43900676',
-          'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
-        }
-      };
+        /*
+        params: {
+        seasons: [2023,2022]
+        }*/
+    };
     
     React.useEffect(() => {
         async function getData()  {
-        const response = await axios.request(options).then((response) => {
-            setData(response);
-            });
-            console.log(response);
+        const response = await axios.get('https://www.balldontlie.io/api/v1/games',options);
+            setData(response.data.data);
         };
         getData();
     }, []);
 
-    const t2 = 'consectetur adipiscing elit, sed do eiusmod tempor' ;
-    const t3 = 'incididunt ut labore et dolore magna aliqua. Ut enim'; 
-    const t4 = 'ad minim veniam, quis nostrud exercitation ullamco laboris';
 
     return(
         <table>
-            <tr>
-                <th>Home</th>
-                <th>Traveling</th>
-                <th>Score</th>
-            </tr>
-            <tr>
-                <td>Nuggets</td>
-                <td>Trailblazers</td>
-                <td>83 - 79</td>
+            <thead>
+                <th>Date</th>
+                <th>Home Team</th>
+                <th>Traveling Team</th>
+                <th>Home Team Score</th>
+                <th>Traveling Team Score</th>
+            </thead>
+            <tbody>
+            {data.map((game,index) => (
+                        <tr key={game.id}>
+                            <td>{game.date.split("T")[0]}</td>
+                            <td>{game.home_team.full_name}</td>
+                            <td>{game.visitor_team.full_name}</td>
+                            <td>{game.home_team_score}</td>
+                            <td>{game.visitor_team_score}</td>
+                        </tr>
+                    ))}
 
-            </tr>
-            <tr>
-                <td>{t2}</td>
-                <td>{t3}</td>
-                <td>{t4}</td>
-            </tr>
+            </tbody>
 
         </table>
     );
