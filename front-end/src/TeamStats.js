@@ -2,28 +2,23 @@ import './TeamStats.css'
 
 
 import './Favorites.css'
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 const TeamStats = () => {
-    const samplePlayerData = {
-        name: 'Player',
-        gp: 20,
-        gs: 15,
-        min: '30:45',
-        pts: 18.5,
-        or: 1.2,
-        dr: 5.7,
-        reb: 4.3,
-        ast: 6.2,
-        stl: 1.1,
-        blk: 0.9,
-        to: 2.4,
-        pf: 3.1,
-        ast_to: 2.5,
-    };
 
-    const rows = Array(12).fill(samplePlayerData);
+    const [playerdata, setData] = useState([]);
+    
+    useEffect(() => {
+    const fetchData = async () => {
+    const result = await axios.get('https://my.api.mockaroo.com/teamplayers.json?key=8e50b960');
+    setData(result.data);
+    };
+    fetchData();
+    }, []);
+
 
 
 
@@ -48,8 +43,6 @@ const TeamStats = () => {
             <table>
                 <thead>
                     <tr>
-                        <th>GP</th>
-                        <th>GS</th>
                         <th>MIN</th>
                         <th>PTS</th>
                         <th>OR</th>
@@ -65,8 +58,6 @@ const TeamStats = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>20</td>
-                        <td>15</td>
                         <td>30:45</td>
                         <td>18.5</td>
                         <td>1.2</td>
@@ -103,24 +94,28 @@ const TeamStats = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {rows.map((player, index) => (
-                            <tr key={index}>
-                                <td>{player.name}</td>
-                                <td>{player.gp}</td>
-                                <td>{player.gs}</td>
-                                <td>{player.min}</td>
-                                <td>{player.pts}</td>
-                                <td>{player.or}</td>
-                                <td>{player.dr}</td>
-                                <td>{player.reb}</td>
-                                <td>{player.ast}</td>
-                                <td>{player.stl}</td>
-                                <td>{player.blk}</td>
-                                <td>{player.to}</td>
-                                <td>{player.pf}</td>
-                                <td>{player.ast_to}</td>
-                            </tr>
-                        ))}
+                    {playerdata.map((player, index) => (
+                        <tr key={index}>
+                            <td>
+                            <Link to={`/player-stats`}>
+                                    {player["[Name]"]}
+                            </Link>
+                            </td>
+                            <td>{player["[Gp]"]}</td>
+                            <td>{player["[Gs]"]}</td>
+                            <td>{player["[Min]"]}</td>
+                            <td>{player["[Pts]"]}</td>
+                            <td>{player["[Or]"]}</td>
+                            <td>{player["[Dr]"]}</td>
+                            <td>{player["[Reb]"]}</td>
+                            <td>{player["[Ast]"]}</td>
+                            <td>{player["[Stl]"]}</td>
+                            <td>{player["[Blk]"]}</td>
+                            <td>{player["[To]"]}</td>
+                            <td>{player["[Pf]"]}</td>
+                            <td>{player["[Ast/To]"]}</td>
+                        </tr>
+                    ))}
                     </tbody>
                 </table>
 

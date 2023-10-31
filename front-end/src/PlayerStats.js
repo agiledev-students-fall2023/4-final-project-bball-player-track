@@ -1,44 +1,32 @@
 import './PlayerStats.css'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-import React from 'react';
 
 
 const PlayerStats = () => {
-    const sampleSeasonData = {
-        name: '2022-23',
-        gp: 20,
-        gs: 15,
-        min: '30:45',
-        pts: 18.5,
-        or: 1.2,
-        dr: 5.7,
-        reb: 4.3,
-        ast: 6.2,
-        stl: 1.1,
-        blk: 0.9,
-        to: 2.4,
-        pf: 3.1,
-        ast_to: 2.5,
+    const [gamedata, setData] = useState([]);
+    
+    useEffect(() => {
+    const fetchData = async () => {
+    const result = await axios.get('https://my.api.mockaroo.com/PlayerStatsGame.json?key=8e50b960');
+    setData(result.data);
     };
+    fetchData();
+    }, []);
 
-    const rows = Array(12).fill(sampleSeasonData);
+    const [seasondata, setData2] = useState([]);
+    
+    useEffect(() => {
+    const fetchData = async () => {
+    const result = await axios.get('https://my.api.mockaroo.com/playerStatsSeason.json?key=8e50b960');
+    setData2(result.data);
+    };
+    fetchData();
+    }, []);
 
-    const sampleGameData ={
-        name: 'LAL',
-        min: '30:45',
-        pts: 18,
-        or: 1,
-        dr: 5,
-        reb: 4,
-        ast: 6,
-        stl: 1,
-        blk: 0,
-        to: 2,
-        pf: 3,
-        ast_to: 2
 
-    }
-    const rowsGame = Array(12).fill(sampleGameData);
 
 
 
@@ -81,22 +69,27 @@ const PlayerStats = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {rowsGame.map((game, index) => (
-                            <tr key={index}>
-                                <td>{game.name}</td>
-                                <td>{game.min}</td>
-                                <td>{game.pts}</td>
-                                <td>{game.or}</td>
-                                <td>{game.dr}</td>
-                                <td>{game.reb}</td>
-                                <td>{game.ast}</td>
-                                <td>{game.stl}</td>
-                                <td>{game.blk}</td>
-                                <td>{game.to}</td>
-                                <td>{game.pf}</td>
-                                <td>{game.ast_to}</td>
-                            </tr>
-                        ))}
+                    {gamedata.map((game, index) => (
+                        <tr key={index}>
+                            <td>
+                            <Link to={`/team-stats`}>
+                                    {game["[Game]"]}
+                            </Link>
+                            </td>
+                            <td>{game["[Min]"]}</td>
+                            <td>{game["[Pts]"]}</td>
+                            <td>{game["[Or]"]}</td>
+                            <td>{game["[Dr]"]}</td>
+                            <td>{game["[Reb]"]}</td>
+                            <td>{game["[Ast]"]}</td>
+                            <td>{game["[Stl]"]}</td>
+                            <td>{game["[Blk]"]}</td>
+                            <td>{game["[To]"]}</td>
+                            <td>{game["[Pf]"]}</td>
+                            <td>{game["[Ast/To]"]}</td>
+                        </tr>
+                    ))}
+
                     </tbody>
                 </table>
 
@@ -121,24 +114,26 @@ const PlayerStats = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {rows.map((season, index) => (
-                            <tr key={index}>
-                                <td>{season.name}</td>
-                                <td>{season.gp}</td>
-                                <td>{season.gs}</td>
-                                <td>{season.min}</td>
-                                <td>{season.pts}</td>
-                                <td>{season.or}</td>
-                                <td>{season.dr}</td>
-                                <td>{season.reb}</td>
-                                <td>{season.ast}</td>
-                                <td>{season.stl}</td>
-                                <td>{season.blk}</td>
-                                <td>{season.to}</td>
-                                <td>{season.pf}</td>
-                                <td>{season.ast_to}</td>
-                            </tr>
-                        ))}
+                    {seasondata.map((season, index) => (
+                        <tr key={index}>
+                            <td>{season["[Season]"]}</td>
+                            <td>{season["[Gp]"]}</td>
+                            <td>{season["[Gs]"]}</td>
+                            <td>{season["[Min]"]}</td>
+                            <td>{season["[Pts]"]}</td>
+                            <td>{season["[Or]"]}</td>
+                            <td>{season["[Dr]"]}</td>
+                            <td>{season["[Reb]"]}</td>
+                            <td>{season["[Ast]"]}</td>
+                            <td>{season["[Stl]"]}</td>
+                            <td>{season["[Blk]"]}</td>
+                            <td>{season["[To]"]}</td>
+                            <td>{season["[Pf]"]}</td>
+                            <td>{season["[Ast/To]"]}</td>
+
+                        </tr>
+                    ))}
+
                     </tbody>
                 </table>
 
