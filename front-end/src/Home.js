@@ -4,20 +4,20 @@ import axios from 'axios';
 import './Home.css'
 const Home = props => {
     const [players, setPlayers] = useState([]);
-    const [games, setGames] = useState([]);
+    const [teams, setTeams] = useState([]);
     useEffect(() => {
         const fetchPlayers = async () => {
-            const result = await axios.get('https://my.api.mockaroo.com/players.json?key=9baa9be0');
-            setPlayers(result.data);
+            const result = await axios.get('http://localhost:3000/');
+            setPlayers(result.data.players);
         };
         fetchPlayers();
     }, []);
     useEffect(() => {
-        const fetchGames = async () => {
-            const result = await axios.get('https://my.api.mockaroo.com/games.json?key=9baa9be0');
-            setGames(result.data);
+        const fetchTeams = async () => {
+            const result = await axios.get('http://localhost:3000/');
+            setTeams(result.data.teams);
         };
-        fetchGames();
+        fetchTeams();
     }, []);
     return (
         <div className="Home">
@@ -37,11 +37,13 @@ const Home = props => {
                     </ul>
                 </div>
                 <div className="players-list">
-                    <h3>Top Games this Season</h3>
+                    <h3>Top Teams</h3>
                     <ul>
-                        {games.map((game, index) => (
-                            <li key={index} className="player">
-                                    <span className="player-name">{game.team1} {game.point1} : {game.point2} {game.team2}</span>
+                        {teams.map((team, index) => (
+                            <li key={index}>
+                                <Link to="team-stats" className="player">
+                                    <span className="player-name">{team.full_name}</span>
+                                </Link>
                             </li>
                         ))}
                     </ul>
