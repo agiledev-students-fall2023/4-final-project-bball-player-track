@@ -21,15 +21,18 @@ const Home = props => {
     }, []);
     return (
         <div className="Home">
-            <h2>Welcome to BBall Player Tracker!</h2>
-            <p className='introduction'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In tellus integer feugiat scelerisque varius. Vulputate enim nulla aliquet porttitor lacus luctus accumsan tortor posuere. Egestas dui id ornare arcu odio ut. Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Posuere morbi leo urna molestie at elementum eu facilisis sed. Dolor morbi non arcu risus quis varius. Arcu odio ut sem nulla pharetra diam. Sociis natoque penatibus et magnis dis parturient montes.</p>
+            <div className='introduction'>
+                <h2>Welcome to BBall Player Tracker!</h2>
+                <p >
+                    This is a website which allows you to access basketball statistics from current NBA games as well as an archive of past statistics. Statistics will be up-to-date and presented in a visually satisfying manner, and you will be able to customize their experience by choosing your favorite players or team.</p>
+            </div>
             <div className="top-players-container">
                 <div className="players-list">
                     <h3>Top Players</h3>
                     <ul>
                         {players.map((player, index) => (
                             <li key={index}>
-                                <Link to="player-stats" className="player">
+                                <Link to={`player-stats/${player.id}`} className="player">
                                     <span className="player-name">{player.first_name} {player.last_name}</span>
                                 </Link>
                             </li>
@@ -41,7 +44,7 @@ const Home = props => {
                     <ul>
                         {teams.map((team, index) => (
                             <li key={index}>
-                                <Link to="team-stats" className="player">
+                                <Link to={`team-stats/${team.id}`} className="player">
                                     <span className="player-name">{team.full_name}</span>
                                 </Link>
                             </li>
