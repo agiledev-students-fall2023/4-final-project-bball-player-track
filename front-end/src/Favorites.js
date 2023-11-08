@@ -1,142 +1,98 @@
-
-import './TeamStats.css';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './Favorites.css';
 
 
 const FavoritesPage = () => {
-    const samplePlayerData = {
-        name: 'Player',
-        gp: 20,
-        gs: 15,
-      
-        min: '30:45',
-        pts: 18.5,
-        or: 1.2,
-        dr: 5.7,
-        reb: 4.3,
-        ast: 6.2,
-        stl: 1.1,
-        blk: 0.9,
-        to: 2.4,
-        pf: 3.1,
-        ast_to: 2.5,
-    };
+    const [playerStats, setPlayerStats] = useState([]);
 
-    const rows = Array(12).fill(samplePlayerData);
+    useEffect(() => {
+        const fetchRandomPlayerStats = async () => {
+            try {
+                // Update the URL to the endpoint of your backend service that fetches the stats
+                const response = await axios.get('http://localhost:5000/favorites');
+                setPlayerStats(response.data);
+            } catch (error) {
+                console.error('Error fetching random player stats:', error);
+                // Handle error or set some default state
+            }
+        };
+
+        fetchRandomPlayerStats();
+    }, []);
 
     return (
-
         <div className="teamStats">
-            {/* Header */}
-            <h1>BBall Player Tracker</h1>
-            <nav>
-                <a href="/players">Players</a>
-                <a href="/teams">Teams</a>
-                <a href="/games">Games</a>
-                <a href="/favorites" className="active">Favorites</a>
-            </nav>
-
-
-            {/* Page Title */}
-            <h2>Favorites</h2>
-
-            {/* Login Section */}
-            <section className="loginSection">
-                <input type="text" placeholder="Username" />
-                <input type="password" placeholder="Password" />
-                <button>Login</button>
-            </section>
-
-            {/* Team Info Section */}
-            <h2>Favorite Team Name Here</h2>
-            <img
-                src="https://picsum.photos/200/300"
-                alt=" "
-                width="100"
-                height="100"
-            />
-            <h2>Team Stats</h2>
-
-            {/* Team Stats Table */}
-            <table>
-                <thead>
-                    <tr>
-                        <th>GP</th>
-                        <th>GS</th>
-                        <th>MIN</th>
-                        <th>PTS</th>
-                        <th>OR</th>
-                        <th>DR</th>
-                        <th>REB</th>
-                        <th>AST</th>
-                        <th>STL</th>
-                        <th>BLK</th>
-                        <th>TO</th>
-                        <th>PF</th>
-                        <th>AST/TO</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>20</td>
-                        <td>15</td>
-                        <td>30:45</td>
-                        <td>18.5</td>
-                        <td>1.2</td>
-                        <td>5.7</td>
-                        <td>4.3</td>
-                        <td>6.2</td>
-                        <td>1.1</td>
-                        <td>0.9</td>
-                        <td>2.4</td>
-                        <td>3.1</td>
-                        <td>2.5</td>
-                    </tr>
-                </tbody>
-            </table>
+            {/* Header and rest of the code remains the same */}
 
             <h2>Player Stats</h2>
-
             {/* Player Stats Table */}
             <table>
                 <thead>
-                    <tr>
-                        <th>NAME</th>
-                        <th>GP</th>
-                        <th>GS</th>
-                        <th>MIN</th>
-                        <th>PTS</th>
-                        <th>OR</th>
-                        <th>DR</th>
-                        <th>REB</th>
-                        <th>AST</th>
-                        <th>STL</th>
-                        <th>BLK</th>
-                        <th>TO</th>
-                        <th>PF</th>
-                        <th>AST/TO</th>
-                    </tr>
+                <tr>
+                    <th class="tooltip">NAME
+                        <span class="tooltiptext">Player Name</span>
+                    </th>
+                    <th class="tooltip">GP
+                        <span class="tooltiptext">Games Played</span>
+                    </th>
+                    <th class="tooltip">MIN
+                        <span class="tooltiptext">Minutes Per Game</span>
+                    </th>
+                    <th class="tooltip">PTS
+                        <span class="tooltiptext">Points Per Game</span>
+                    </th>
+                    <th class="tooltip">OR
+                        <span class="tooltiptext">Offensive Rebounds Per Game</span>
+                    </th>
+                    <th class="tooltip">DR
+                        <span class="tooltiptext">Defensive Rebounds Per Game</span>
+                    </th>
+                    <th class="tooltip">REB
+                        <span class="tooltiptext">Total Rebounds Per Game</span>
+                    </th>
+                    <th class="tooltip">AST
+                        <span class="tooltiptext">Assists Per Game</span>
+                    </th>
+                    <th class="tooltip">STL
+                        <span class="tooltiptext">Steals Per Game</span>
+                    </th>
+                    <th class="tooltip">BLK
+                        <span class="tooltiptext">Blocks Per Game</span>
+                    </th>
+                    <th class="tooltip">TO
+                        <span class="tooltiptext">Turnovers Per Game</span>
+                    </th>
+                    <th class="tooltip">PF
+                        <span class="tooltiptext">Personal Fouls Per Game</span>
+                    </th>
+                </tr>
+
+
                 </thead>
                 <tbody>
-                    {rows.map((player, index) => (
-                        <tr key={index}>
-                            <td>{player.name}</td>
-                            <td>{player.gp}</td>
-                            <td>{player.gs}</td>
-                            <td>{player.min}</td>
-                            <td>{player.pts}</td>
-                            <td>{player.or}</td>
-                            <td>{player.dr}</td>
-                            <td>{player.reb}</td>
-                            <td>{player.ast}</td>
-                            <td>{player.stl}</td>
-                            <td>{player.blk}</td>
-                            <td>{player.to}</td>
-                            <td>{player.pf}</td>
-                            <td>{player.ast_to}</td>
-
+                    {playerStats.length > 0 ? (
+                        playerStats.map((player, index) => (
+                            <tr key={index}>
+                                <td>{player.player.first_name} {player.player.last_name}</td>
+                                <td>{player.game.date}</td>
+                                <td>{player.min}</td>
+                                <td>{player.pts}</td>
+                                <td>{player.oreb}</td>
+                                <td>{player.dreb}</td>
+                                <td>{player.reb}</td>
+                                <td>{player.ast}</td>
+                                <td>{player.stl}</td>
+                                <td>{player.blk}</td>
+                                <td>{player.turnover}</td>
+                                <td>{player.pf}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="14">Loading player stats...</td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
         </div>

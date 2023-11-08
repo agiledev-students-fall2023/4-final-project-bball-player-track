@@ -7,14 +7,14 @@ const Home = props => {
     const [teams, setTeams] = useState([]);
     useEffect(() => {
         const fetchPlayers = async () => {
-            const result = await axios.get('http://localhost:5000/');
+            const result = await axios.get('http://localhost:8080/');
             setPlayers(result.data.players);
         };
         fetchPlayers();
     }, []);
     useEffect(() => {
         const fetchTeams = async () => {
-            const result = await axios.get('http://localhost:5000/');
+            const result = await axios.get('http://localhost:8080/');
             setTeams(result.data.teams);
         };
         fetchTeams();
