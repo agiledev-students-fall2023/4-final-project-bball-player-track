@@ -76,11 +76,64 @@ app.get('/favorites', async (req, res) => {
         res.status(500).json({ message: 'Error fetching player stats' });
     }
 });
-
-
-
-
-
+app.get('/api/teams/stats', async (req, res) => {
+    try {
+      const response = await axios.get('https://www.balldontlie.io/api/v1/teams');
+  
+      // Check if the API returned a list of teams
+      if (response.data && response.data.data) {
+        const teams = response.data.data;
+  
+        // Initialize team stats
+        let teamStats = {};
+  
+        teams.forEach(team => {
+          teamStats[team.id] = {
+            id: team.id,
+            full_name: team.full_name,
+            wins: 0,
+            losses: 0,
+            // ... (initialize other stats)
+          };
+        });
+  
+        // Fetch games and update team stats
+        const today = new Date();
+        const endDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+        const gamesResponse = await axios.get(`https://www.balldontlie.io/api/v1/games?start_date=2023-10-18&end_date=${endDate}&per_page=100&page=1`);
+        if (gamesResponse.data && gamesResponse.data.data) {
+          const games = gamesResponse.data.data;
+  
+          games.forEach(game => {
+            const homeTeam = teamStats[game.home_team.id];
+            const visitorTeam = teamStats[game.visitor_team.id];
+  
+            // Determine win or loss
+            if (game.home_team_score > game.visitor_team_score) {
+              homeTeam.wins += 1;
+              visitorTeam.losses += 1;
+            } else {
+              homeTeam.losses += 1;
+              visitorTeam.wins += 1;
+            }
+  
+            // ... (aggregate other stats)
+          });
+        }
+  
+        // Convert to array
+        const statsArray = Object.values(teamStats);
+  
+        res.json(statsArray);
+      } else {
+        res.status(404).json({ message: 'No teams found' });
+      }
+    } catch (error) {
+      console.error('Error fetching team stats: ', error);
+      res.status(500).json({ message: 'Error fetching team stats' });
+    }
+});
+  
 
 
   
