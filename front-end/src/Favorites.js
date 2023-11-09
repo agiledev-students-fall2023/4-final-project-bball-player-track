@@ -10,7 +10,7 @@ const FavoritesPage = () => {
         const fetchRandomPlayerStats = async () => {
             try {
                 // Update the URL to the endpoint of your backend service that fetches the stats
-                const response = await axios.get('http://localhost:5000/favorites');
+                const response = await axios.get('http://localhost:3000/favorites');
                 setPlayerStats(response.data);
             } catch (error) {
                 console.error('Error fetching random player stats:', error);

@@ -8,7 +8,7 @@ const Teams = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get('https://my.api.mockaroo.com/AllTeams.json?key=85d56db0');
+            const result = await axios.get('http://localhost:8080/api/teams/stats');
             setData(result.data);
         };
         fetchData();
@@ -16,24 +16,23 @@ const Teams = () => {
 
     return (
         <div className="teams">
-            <h2>NBA Teams</h2>
+            <h2>NBA Teams Statistics</h2>
             <table>
                 <thead>
                     <tr>
                         <th>Team</th>
                         <th>Wins</th>
                         <th>Losses</th>
-                        <th>Points</th>
+                        {/* Add more columns as needed */}
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((team, index) => (
+                    {data.map((teamStat, index) => (
                         <tr key={index}>
-                            {}
-                            <td><Link to="/team-stats">{team["[Teams]"]}</Link></td>
-                            <td>{team["[Wins]"]}</td>
-                            <td>{team["[Losses]"]}</td>
-                            <td>{team["[Points]"]}</td>
+                            <td><Link to={`/team-stats/${teamStat.id}`}>{teamStat.full_name}</Link></td>
+                            <td>{teamStat.wins}</td>
+                            <td>{teamStat.losses}</td>
+                            {/* Render more statistics as needed */}
                         </tr>
                     ))}
                 </tbody>
