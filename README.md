@@ -25,6 +25,6 @@ cd front-end
 npm start
 cd ..
 cd back-end
-node app.js
+node server.js
 
-Then, navigate to whatever port the react project is served on(localhost:3000)
+Then, in your browser navigate to whatever port the react project is served on(localhost:3000)
