@@ -133,6 +133,42 @@ app.get('/api/teams/stats', async (req, res) => {
       res.status(500).json({ message: 'Error fetching team stats' });
     }
 });
+
+app.get("/games", async (req, res) => {
+  try {
+
+    const options = {
+        /*
+        params: {
+        seasons: [2023,2022]
+        }*/
+      };
+
+      // Fetch player stats from the API
+
+      const response = await axios.get('https://www.balldontlie.io/api/v1/games',options);
+
+      // Check if the API returned a list of player stats
+      if(response.data && response.data.data) {
+          const games = response.data.data;
+          // Process and format the dates
+          const formattedPlayerStats = games.map((game,index) => {
+              const formattedDate = game.date.split('T')[0];
+              game.date = formattedDate;
+              return game;
+          });
+          
+          // Send the selected stats to the front end
+          //console.table(formattedPlayerStats);
+          res.json(formattedPlayerStats);
+      } else {
+          res.status(404).json({ message: 'No player stats found' });
+      }
+  } catch (error) {
+      console.error('Error fetching player stats: ', error);
+      res.status(500).json({ message: 'Error fetching player stats' });
+  }
+});
   
 
 
