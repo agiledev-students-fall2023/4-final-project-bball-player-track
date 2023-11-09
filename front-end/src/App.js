@@ -10,7 +10,7 @@ import PlayerStats from './PlayerStats';
 /*add import */
 import Teams from './Teams'; // Import the Teams component
 import Players from './Players'; // Import the Players component
-import Games from './GameStats.js';
+import Games from './components/Game.mjs';
 
 const App = props => {
   return (

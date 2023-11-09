@@ -19,3 +19,12 @@ If you wish to contribute to the project, please read the [Contributing instruct
 
 ## Additional Links
 You can find our App Map and Wire Frames in [UX Design](./UX-DESIGN.md).
+
+## How To Run
+cd front-end
+npm start
+cd ..
+cd back-end
+node app.js
+
+Then, navigate to whatever port the react project is served on(localhost:3000)
