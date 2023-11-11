@@ -31,19 +31,18 @@ const TeamStats = () => {
             
             <h2>Team Name Here</h2>
             
-
+{/*
             <img
             src="https://picsum.photos/200/300"
             alt=" "
             width="100"
             height="100"
             />
-            <h2>Team Stats</h2>
+*/}
 
             <table>
                 <thead>
                     <tr>
-                        <th>MIN</th>
                         <th>PTS</th>
                         <th>OR</th>
                         <th>DR</th>
@@ -58,7 +57,6 @@ const TeamStats = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>30:45</td>
                         <td>18.5</td>
                         <td>1.2</td>
                         <td>5.7</td>
