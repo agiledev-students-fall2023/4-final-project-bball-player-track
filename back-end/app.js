@@ -169,6 +169,75 @@ app.get("/games", async (req, res) => {
       res.status(500).json({ message: 'Error fetching player stats' });
   }
 });
+
+app.get('/api/players/stats', async (req, res) => {
+  try {
+    const today = new Date();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const endDate = `${today.getFullYear()}-${month}-${day}`;
+
+    let currentPage = 1;
+    const maxPagesToFetch = 20; // Set a limit to page 30
+    const playerAggregates = {};
+
+    do {
+      const response = await axios.get(`https://www.balldontlie.io/api/v1/stats?start_date=2023-10-18&end_date=${endDate}&per_page=100&page=${currentPage}`);
+
+      if (response.data && response.data.data) {
+        // Aggregate data by player
+        response.data.data.forEach(playerStat => {
+          const playerId = playerStat.player.id;
+          if (!playerAggregates[playerId]) {
+            playerAggregates[playerId] = {
+              fullName: `${playerStat.player.first_name} ${playerStat.player.last_name}`,
+              totalPts: 0,
+              totalAst: 0,
+              totalReb: 0,
+              totalStl: 0,
+              gamesPlayed: 0
+            };
+          }
+          playerAggregates[playerId].totalPts += playerStat.pts;
+          playerAggregates[playerId].totalAst += playerStat.ast;
+          playerAggregates[playerId].totalReb += playerStat.reb;
+          playerAggregates[playerId].totalStl += playerStat.stl;
+          playerAggregates[playerId].gamesPlayed += 1;
+        });
+
+        currentPage++;
+      } else {
+        res.status(404).json({ message: 'No stats found' });
+        return;
+      }
+    } while (currentPage <= maxPagesToFetch);
+
+    // Calculate averages and convert to float rounded to two decimal places
+    const processedStats = Object.values(playerAggregates).map(player => ({
+      fullName: player.fullName,
+      ppg: parseFloat((player.totalPts / player.gamesPlayed).toFixed(2)),
+      apg: parseFloat((player.totalAst / player.gamesPlayed).toFixed(2)),
+      rpg: parseFloat((player.totalReb / player.gamesPlayed).toFixed(2)),
+      spg: parseFloat((player.totalStl / player.gamesPlayed).toFixed(2))
+    }));
+
+    // Sort by PPG and get top 20
+    const topStats = processedStats.sort((a, b) => b.ppg - a.ppg).slice(0, 20);
+
+    res.json(topStats);
+  } catch (error) {
+    console.error('Error fetching player stats: ', error);
+    res.status(500).json({ message: 'Error fetching player stats' });
+  }
+});
+
+
+
+
+
+
+
+
   
 
 
