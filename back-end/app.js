@@ -245,7 +245,67 @@ app.get('/api/players/stats', async (req, res) => {
     console.error('Error fetching player stats: ', error);
     res.status(500).json({ message: 'Error fetching player stats' });
   }
+
+
+
 });
+
+app.get('/api/playersonteam/:teamName', async (req, res) => {
+  const teamName = req.params.teamName;
+
+
+
+  try {
+    const currentDate = new Date();
+    const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); 
+    const currentDay = String(currentDate.getDate()).padStart(2, '0');
+    const currentYear = currentDate.getFullYear();
+    const currentDateFinal = `${currentMonth}/${currentDay}/${currentYear}`;
+  
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 14); 
+    const oneWeekAgoMonth = String(oneWeekAgo.getMonth() + 1).padStart(2, '0');
+    const oneWeekAgoDay = String(oneWeekAgo.getDate()).padStart(2, '0');
+    const oneWeekAgoYear = oneWeekAgo.getFullYear();
+    const oneWeekAgoFinal = `${oneWeekAgoMonth}/${oneWeekAgoDay}/${oneWeekAgoYear}`;
+    
+    const firstResponse = await axios.get('https://www.balldontlie.io/api/v1/stats?start_date=${oneWeeksAgoFinal}&end_date=${currentDateFinal}');
+    const totalPages = response.data.meta.total_pages;
+
+    let playersOnTeam = [];
+
+    for (let page = 1; page <= totalPages; page ++){
+      const currentResponse = await axios.get('https://www.balldontlie.io/api/v1/stats?start_date=${oneWeeksAgoFinal}&end_date=${currentDateFinal}&page=${page}');
+      const currentData = currentResponse.data.data;
+
+      currentData.forEach(item =>{
+        if (item.team.full_name === teamName){
+          const playerSeenAlready = playersOnTeam.find(player=> player.playerId === item.player.id);
+          if (!playerSeenAlready){
+            playersOnTeam.push({
+              playerName: item.player.full_name,
+              playerId: item.player.id
+            })
+          }
+        }
+      })
+    }
+    res.json(playersOnTeam);
+    
+
+
+
+
+
+  } catch (error) {
+      console.error('Error fetching team players: ', error);
+      res.status(500).json({ message: 'Error fetching team players ' });
+  }
+
+
+
+
+})
 
  
 module.exports = app
