@@ -15,6 +15,7 @@ const Header = props => {
                 <Link to="/teams">Teams</Link>
                 <Link to="/games">Games</Link>
                 <Link to="/favorites">Favorites</Link>
+                <Link to="/login" className="login-link">login</Link>
             </nav>
         </div>
     );

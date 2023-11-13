@@ -1,5 +1,5 @@
 import './TeamStats.css'
-
+import { useParams } from 'react-router-dom';
 
 import './Favorites.css'
 import React, { useState, useEffect } from 'react';
@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 
 const TeamStats = () => {
 
+    const {teamid} = useParams()
+
     const [playerdata, setData] = useState([]);
     
     useEffect(() => {
@@ -17,7 +19,7 @@ const TeamStats = () => {
     setData(result.data);
     };
     fetchData();
-    }, []);
+    }, [teamid]);
 
 
 
@@ -29,7 +31,7 @@ const TeamStats = () => {
 
             
             
-            <h2>Team Name Here</h2>
+            <h2>{teamid}</h2>
             
 {/*
             <img

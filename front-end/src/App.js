@@ -11,7 +11,7 @@ import PlayerStats from './PlayerStats';
 import Teams from './Teams'; // Import the Teams component
 import Players from './Players'; // Import the Players component
 import Games from './components/game.mjs';
-
+import Login from './Login';
 const App = props => {
   return (
     <div className="App">
@@ -29,6 +29,7 @@ const App = props => {
             <Route path = "/games" element = {<Games/>}/>
             <Route path="/teams" element={<Teams />} /> {/* Route for Teams */}
             <Route path="/players" element={<Players />} /> {/* Route for Players */}
+            <Route path="/login" element={<Login />} />
           </Routes>
         </main>
       </Router>
