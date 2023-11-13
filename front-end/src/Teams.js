@@ -29,7 +29,7 @@ const Teams = () => {
                 <tbody>
                     {data.map((teamStat, index) => (
                         <tr key={index}>
-                            <td><Link to={`/team-stats/${teamStat.id}`}>{teamStat.full_name}</Link></td>
+                            <td><Link to={`/team-stats/${teamStat.full_name}`}>{teamStat.full_name}</Link></td>
                             <td>{teamStat.wins}</td>
                             <td>{teamStat.losses}</td>
                             {/* Render more statistics as needed */}
