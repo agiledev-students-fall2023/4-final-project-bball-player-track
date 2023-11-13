@@ -25,7 +25,6 @@ npm install
 
 ### 3. Start the Express.js Server
 
-
 ```bash
 npm start
 ```
@@ -34,3 +33,13 @@ or
 nodemon server.js
 ```
 The server runs on PORT=8080. 
+
+### (4. If you want to run the unit test)
+Make sure you have mocha chai chai-http installed.
+```bash
+npm install mocha chai chai-http
+```
+Run the test.
+```bash
+npm test
+```

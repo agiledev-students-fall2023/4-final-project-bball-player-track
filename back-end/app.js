@@ -7,6 +7,7 @@ require("dotenv").config({ silent: true });
 const morgan = require("morgan");
 app.use(morgan("dev"));
 const cors = require('cors');
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
@@ -16,28 +17,43 @@ app.use("/static", express.static("public"));
 
 
 app.get("/", async (req, res) => {
-    try {
-        const [playerResponse, teamResponse] = await Promise.all([
-            axios.get('https://www.balldontlie.io/api/v1/players'),
-            axios.get('https://www.balldontlie.io/api/v1/teams')
-            
-        ]);
-        const players = playerResponse.data.data;
-        const shuffledPlayers = players.sort(() => 0.5 - Math.random());
-        const selectedPlayers = shuffledPlayers.slice(0, 20);
+  try {
+      const [playerResponse, teamResponse] = await Promise.all([
+          axios.get('https://www.balldontlie.io/api/v1/players'),
+          axios.get('https://www.balldontlie.io/api/v1/teams')
+          
+      ]);
+      const players = playerResponse.data.data;
+      const shuffledPlayers = players.sort(() => 0.5 - Math.random());
+      const selectedPlayers = shuffledPlayers.slice(0, 20);
 
-        const teams = teamResponse.data.data;
-        const shuffledTeams = teams.sort(() => 0.5 - Math.random());
-        const selectedTeams = shuffledTeams.slice(0, 20);
-        const data = {
-            players: selectedPlayers,
-            teams: selectedTeams
-        };
-        res.json(data);
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
+      const teams = teamResponse.data.data;
+      const shuffledTeams = teams.sort(() => 0.5 - Math.random());
+      const selectedTeams = shuffledTeams.slice(0, 20);
+      const data = {
+          players: selectedPlayers,
+          teams: selectedTeams
+      };
+      res.json(data);
+  } catch (error) {
+      res.status(500).send(error.message);
+  }
 });
+let users = {
+  'user1': '1',
+  'user2': '2'
+};
+
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (users[username] && users[username] === password) {
+      res.status(200).json({ message: 'Welcome' });
+  } else {
+      res.status(401).json({ message: 'Login failed' });
+  }
+});
+
 app.get('/favorites', async (req, res) => {
     try {
         // Fetch player stats from the API
@@ -231,16 +247,5 @@ app.get('/api/players/stats', async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-  
-
-
-  
  
 module.exports = app
