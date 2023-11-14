@@ -253,7 +253,7 @@ app.get('/api/players/stats', async (req, res) => {
 });
 
 app.get('/api/playersonteam/:teamName', async (req, res) => {
-  const teamName = req.params.teamName;
+  const teamName = req.params.teamName.slice(1);
 
 
 
@@ -262,36 +262,40 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
     const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); 
     const currentDay = String(currentDate.getDate()).padStart(2, '0');
     const currentYear = currentDate.getFullYear();
-    const currentDateFinal = `${currentMonth}/${currentDay}/${currentYear}`;
+    const currentDateFinal = `${currentYear}-${currentMonth}-${currentDay}`;
   
     const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 14); 
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); 
     const oneWeekAgoMonth = String(oneWeekAgo.getMonth() + 1).padStart(2, '0');
     const oneWeekAgoDay = String(oneWeekAgo.getDate()).padStart(2, '0');
     const oneWeekAgoYear = oneWeekAgo.getFullYear();
-    const oneWeekAgoFinal = `${oneWeekAgoMonth}/${oneWeekAgoDay}/${oneWeekAgoYear}`;
+    const oneWeekAgoFinal = `${oneWeekAgoYear}-${oneWeekAgoMonth}-${oneWeekAgoDay}`;
     
-    const firstResponse = await axios.get('https://www.balldontlie.io/api/v1/stats?start_date=${oneWeeksAgoFinal}&end_date=${currentDateFinal}');
-    const totalPages = response.data.meta.total_pages;
-
+    const firstResponse = await axios.get(`https://www.balldontlie.io/api/v1/stats?per_page=100&start_date=${oneWeekAgoFinal}&end_date=${currentDateFinal}`);
+    const totalPages = firstResponse.data.meta.total_pages;
     let playersOnTeam = [];
 
     for (let page = 1; page <= totalPages; page ++){
-      const currentResponse = await axios.get('https://www.balldontlie.io/api/v1/stats?start_date=${oneWeeksAgoFinal}&end_date=${currentDateFinal}&page=${page}');
+      const currentResponse = await axios.get(`https://www.balldontlie.io/api/v1/stats?per_page=100&start_date=${oneWeekAgoFinal}&end_date=${currentDateFinal}&page=${page}`);
       const currentData = currentResponse.data.data;
+      
 
       currentData.forEach(item =>{
+
         if (item.team.full_name === teamName){
           const playerSeenAlready = playersOnTeam.find(player=> player.playerId === item.player.id);
           if (!playerSeenAlready){
             playersOnTeam.push({
-              playerName: item.player.full_name,
+              playerName: item.player.first_name,
               playerId: item.player.id
             })
           }
         }
       })
+      
     }
+   
+   
     res.json(playersOnTeam);
     
 
@@ -308,6 +312,44 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
 
 
 })
+
+app.post('/api/teamplayer', async (req, res) => {
+  const { playerNames, playerIDs } = req.body;
+
+  try{
+    const response = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?player_ids[]=${playerIDs[0]}&player_ids[]=${playerIDs[1]}&player_ids[]=${playerIDs[2]}&player_ids[]=${playerIDs[3]}&player_ids[]=${playerIDs[4]}&player_ids[]=${playerIDs[5]}&player_ids[]=${playerIDs[6]}&player_ids[]=${playerIDs[7]}&player_ids[]=${playerIDs[8]}&player_ids[]=${playerIDs[9]}&player_ids[]=${playerIDs[10]}&player_ids[]=${playerIDs[11]}&player_ids[]=${playerIDs[12]}&player_ids[]=${playerIDs[13]}&player_ids[]=${playerIDs[14]}&player_ids[]=${playerIDs[15]}&player_ids[]=${playerIDs[16]}&player_ids[]=${playerIDs[17]}`);
+    console.log (response.data);
+    let teamPlayerData = [];
+
+    for (let i = 0; i < 18; i++){
+      for (let j = 0; j<response.data.data.length; j++){
+
+        if (playerIDs[i]===response.data.data[j].player_id){
+          teamPlayerData.push({
+            Name: playerNames[i],
+            Gp: response.data.data[j].games_played,
+            Min: response.data.data[j].min,
+            Pts: response.data.data[j].pts,
+            Reb: response.data.data[j].reb,
+            Ast: response.data.data[j].ast,
+            Stl: response.data.data[j].stl,
+            Blk: response.data.data[j].blk,
+            To: response.data.data[j].turnover,
+            Pf: response.data.data[j].pf
+          })
+        }
+      }
+    }
+
+    console.log (teamPlayerData);
+
+    res.json (teamPlayerData);
+
+  } catch (error) {
+      console.error('Error fetching player stats: ', error);
+      res.status(500).json({ message: 'Error fetching player stats ' });
+  }
+});
 
  
 module.exports = app
