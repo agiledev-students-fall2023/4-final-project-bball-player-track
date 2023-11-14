@@ -5,7 +5,6 @@ const { expect } = chai;
 
 chai.use(chaiHttp);
 
-/*
 describe('Login Route', function() {
 
     it('should return Welcome message for correct credentials', function(done) {
@@ -29,7 +28,7 @@ describe('Login Route', function() {
                 done();
             });
     });
-});*/
+});
 
 describe('Games Route', () => {
     it('should return game data for correct route', function(done) {
