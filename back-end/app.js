@@ -93,61 +93,63 @@ app.get('/favorites', async (req, res) => {
     }
 });
 app.get('/api/teams/stats', async (req, res) => {
-    try {
+  try {
       const response = await axios.get('https://www.balldontlie.io/api/v1/teams');
-  
-      // Check if the API returned a list of teams
+
       if (response.data && response.data.data) {
-        const teams = response.data.data;
-  
-        // Initialize team stats
-        let teamStats = {};
-  
-        teams.forEach(team => {
-          teamStats[team.id] = {
-            id: team.id,
-            full_name: team.full_name,
-            wins: 0,
-            losses: 0,
-            // ... (initialize other stats)
-          };
-        });
-  
-        // Fetch games and update team stats
-        const today = new Date();
-        const endDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-        const gamesResponse = await axios.get(`https://www.balldontlie.io/api/v1/games?start_date=2023-10-18&end_date=${endDate}&per_page=100&page=1`);
-        if (gamesResponse.data && gamesResponse.data.data) {
-          const games = gamesResponse.data.data;
-  
-          games.forEach(game => {
-            const homeTeam = teamStats[game.home_team.id];
-            const visitorTeam = teamStats[game.visitor_team.id];
-  
-            // Determine win or loss
-            if (game.home_team_score > game.visitor_team_score) {
-              homeTeam.wins += 1;
-              visitorTeam.losses += 1;
-            } else {
-              homeTeam.losses += 1;
-              visitorTeam.wins += 1;
-            }
-  
-            // ... (aggregate other stats)
+          const teams = response.data.data;
+          let teamStats = {};
+
+          teams.forEach(team => {
+              teamStats[team.id] = {
+                  id: team.id,
+                  full_name: team.full_name,
+                  wins: 0,
+                  losses: 0,
+                  // ... (initialize other stats)
+              };
           });
-        }
-  
-        // Convert to array
-        const statsArray = Object.values(teamStats);
-  
-        res.json(statsArray);
+
+          // Fetch games and update team stats
+          const today = new Date();
+          const endDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+          let page = 1;
+          let totalPages = 1;
+
+          do {
+              const gamesResponse = await axios.get(`https://www.balldontlie.io/api/v1/games?start_date=2023-10-18&end_date=${endDate}&per_page=100&page=${page}`);
+              if (gamesResponse.data && gamesResponse.data.data) {
+                  const games = gamesResponse.data.data;
+                  totalPages = gamesResponse.data.meta.total_pages;
+
+                  games.forEach(game => {
+                      const homeTeam = teamStats[game.home_team.id];
+                      const visitorTeam = teamStats[game.visitor_team.id];
+
+                      if (game.home_team_score > game.visitor_team_score) {
+                          homeTeam.wins += 1;
+                          visitorTeam.losses += 1;
+                      } else {
+                          homeTeam.losses += 1;
+                          visitorTeam.wins += 1;
+                      }
+                      // ... (aggregate other stats)
+                  });
+              }
+              page++;
+          } while (page <= totalPages);
+
+          // Convert to array
+          const statsArray = Object.values(teamStats);
+
+          res.json(statsArray);
       } else {
-        res.status(404).json({ message: 'No teams found' });
+          res.status(404).json({ message: 'No teams found' });
       }
-    } catch (error) {
+  } catch (error) {
       console.error('Error fetching team stats: ', error);
       res.status(500).json({ message: 'Error fetching team stats' });
-    }
+  }
 });
 
 app.get("/games", async (req, res) => {
