@@ -99,4 +99,24 @@ describe('API Routes', function() {
         
 
     });
+
+    describe('Players On Team Route', () => {
+        it('should return players on team', function(done) {
+
+            const teamName = "Atlanta Hawks";
+
+            chai
+            
+                .request(app)
+
+                .get(`/api/playersonteam/${teamName}`)
+                .end(function(err, res) {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body[0]).to.have.property('PlayerName');
+                    expect(res.body[0]).to.have.property('PlayerId');
+                    done();
+                });
+        });
+    });
 });
