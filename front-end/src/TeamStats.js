@@ -1,7 +1,7 @@
-import './TeamStats.css'
+import './TeamStats.css';
 import { useParams } from 'react-router-dom';
 
-import './Favorites.css'
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -11,14 +11,23 @@ const TeamStats = () => {
 
     const {teamid} = useParams()
 
-    const [playerdata, setData] = useState([]);
+    
+    const [playerStats, setPlayerStats] = useState([]);
     
     useEffect(() => {
-    const fetchData = async () => {
-    const result = await axios.get('https://my.api.mockaroo.com/teamplayers.json?key=8e50b960');
-    setData(result.data);
-    };
-    fetchData();
+    const fetchPlayerStats = async () => {
+        const firstresult = await axios.get(`http://localhost:8080/api/playersonteam/:${teamid}`);
+        const playersOnTeam = firstresult.data;
+        const playerNames = playersOnTeam.map(player => player.playerName);
+        const playerIds = playersOnTeam.map(player => player.playerId);
+        const playerStatResult = await axios.post('http://localhost:8080/api/teamplayer',{
+            playerNames: playerNames,
+            playerIDs: playerIds
+        });
+
+        setPlayerStats(playerStatResult.data);
+        };
+    fetchPlayerStats();
     }, [teamid]);
 
 
@@ -26,13 +35,14 @@ const TeamStats = () => {
 
 
     return (
+
         <div className="teamStats">
             
 
             
             
             <h2>{teamid}</h2>
-            
+           
 {/*
             <img
             src="https://picsum.photos/200/300"
@@ -41,7 +51,7 @@ const TeamStats = () => {
             height="100"
             />
 */}
-
+{/*
             <table>
                 <thead>
                     <tr>
@@ -72,48 +82,40 @@ const TeamStats = () => {
                     </tr>
                 </tbody>
             </table>
-
+*/}
             <h2>Player Stats</h2>
-                <table>
+                <table className="playersOnTeamTable">
                     <thead>
                         <tr>
                             <th>NAME</th>
                             <th>GP</th>
-                            <th>GS</th>
                             <th>MIN</th>
                             <th>PTS</th>
-                            <th>OR</th>
-                            <th>DR</th>
                             <th>REB</th>
                             <th>AST</th>
                             <th>STL</th>
                             <th>BLK</th>
                             <th>TO</th>
                             <th>PF</th>
-                            <th>AST/TO</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {playerdata.map((player, index) => (
+                    {playerStats.map((player, index) => (
                         <tr key={index}>
                             <td>
                             <Link to={`/player-stats`}>
-                                    {player["[Name]"]}
+                                    {player.Name}
                             </Link>
                             </td>
-                            <td>{player["[Gp]"]}</td>
-                            <td>{player["[Gs]"]}</td>
-                            <td>{player["[Min]"]}</td>
-                            <td>{player["[Pts]"]}</td>
-                            <td>{player["[Or]"]}</td>
-                            <td>{player["[Dr]"]}</td>
-                            <td>{player["[Reb]"]}</td>
-                            <td>{player["[Ast]"]}</td>
-                            <td>{player["[Stl]"]}</td>
-                            <td>{player["[Blk]"]}</td>
-                            <td>{player["[To]"]}</td>
-                            <td>{player["[Pf]"]}</td>
-                            <td>{player["[Ast/To]"]}</td>
+                            <td>{player.Gp}</td>
+                            <td>{player.Min}</td>
+                            <td>{player.Pts}</td>
+                            <td>{player.Reb}</td>
+                            <td>{player.Ast}</td>
+                            <td>{player.Stl}</td>
+                            <td>{player.Blk}</td>
+                            <td>{player.To}</td>
+                            <td>{player.Pf}</td>
                         </tr>
                     ))}
                     </tbody>
@@ -126,5 +128,6 @@ const TeamStats = () => {
         </div>
     );
 }
+
 
 export default TeamStats;
