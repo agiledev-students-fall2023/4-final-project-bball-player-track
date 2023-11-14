@@ -29,3 +29,18 @@ describe('Login Route', function() {
             });
     });
 });
+
+describe('Games Route', () => {
+    it('should return game data for correct route', function(done) {
+        chai.request(app)
+            .get('/games')
+            .end(function(err, res) {
+                expect(res).to.have.status(200);
+                expect(res.body[0]).to.have.property('id');
+                expect(res.body[0]).to.have.property('date');
+                expect(res.body[0]).to.have.property('home_team');
+                expect(res.body[0]).to.have.property('visitor_team');
+                done();
+            });
+    });
+});
