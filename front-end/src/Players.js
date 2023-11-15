@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import './Players.css'; 
+import './Players.css';
 
 const Players = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get('https://my.api.mockaroo.com/players.json?key=85d56db0');
+            const result = await axios.get('http://localhost:8080/api/players/stats');
             setData(result.data);
         };
         fetchData();
@@ -16,7 +15,7 @@ const Players = () => {
 
     return (
         <div className="players">
-            <h2>NBA Players</h2>
+            <h2>NBA Players - Top Performers</h2>
             <table>
                 <thead>
                     <tr>
@@ -30,15 +29,11 @@ const Players = () => {
                 <tbody>
                     {data.map((player, index) => (
                         <tr key={index}>
-                            <td>
-                            <Link to={`/player-stats`}>
-                                    {player["[Players]"]}
-                            </Link>
-                            </td>
-                            <td>{player["[Points Per Game]"]}</td>
-                            <td>{player["[Assists Per Game]"]}</td>
-                            <td>{player["[Steals Per Game]"]}</td>
-                            <td>{player["[Rebounds Per Game]"]}</td>
+                            <td>{player.fullName}</td>
+                            <td>{player.ppg}</td>
+                            <td>{player.apg}</td>
+                            <td>{player.spg}</td>
+                            <td>{player.rpg}</td>
                         </tr>
                     ))}
                 </tbody>
