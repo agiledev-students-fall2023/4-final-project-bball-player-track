@@ -1,16 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import './Favorites.css';
 
+
+//import { AuthContext } from './path/to/AuthContext'; // Update with actual path
+import './Favorites.css';
 
 const FavoritesPage = () => {
     const [playerStats, setPlayerStats] = useState([]);
+    //const { isAuthenticated, authToken } = useContext(AuthContext); // Assuming you have an AuthContext
 
     useEffect(() => {
         const fetchRandomPlayerStats = async () => {
+            /*if (!isAuthenticated) {
+                // Handle the case when the user is not authenticated
+                return;
+            }*/
+
             try {
-                // Update the URL to the endpoint of your backend service that fetches the stats
-                const response = await axios.get('http://localhost:3000/favorites');
+                const response = await axios.get('http://localhost:8080/favorites', {
+                    //headers: {
+                      //  Authorization: `Bearer ${authToken}` // Include the auth token in the request
+                    //}
+                });
                 setPlayerStats(response.data);
             } catch (error) {
                 console.error('Error fetching random player stats:', error);
@@ -19,7 +30,7 @@ const FavoritesPage = () => {
         };
 
         fetchRandomPlayerStats();
-    }, []);
+    },[]); //[isAuthenticated, authToken]); // Add dependencies here
 
     return (
         <div className="teamStats">
@@ -97,6 +108,8 @@ const FavoritesPage = () => {
             </table>
         </div>
     );
+
+
 }
 
 export default FavoritesPage;
