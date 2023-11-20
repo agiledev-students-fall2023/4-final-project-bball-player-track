@@ -43,3 +43,281 @@ th {
 
 /* Adjust margins or paddings as needed */
 
+.btn-outline-light{
+    background:#5dc6bc!important;
+    border:0px;
+}
+
+#inputContainer{
+    justify-content:center;
+    
+    max-width:9999px;
+    background:linear-gradient( to bottom, rgb(49 111 105 / 71%) 92%, rgb(0 0 0) 100%);
+    padding:0;
+    overflow:hidden;
+}
+
+.navbar{
+    padding:15px;
+    position:absolute;
+}
+
+video{
+    position:relative;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    height:750px;
+}
+
+#inputBox{
+    position:absolute;  left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto;
+    top:20%; 
+    width: 250px;
+    color:white;
+}
+
+input{
+    margin-bottom:15px;
+    text-align:center;
+    opacity:0.75;
+    background:rgb(214, 214, 214);
+
+    border-radius:7px !important;
+    border:3px solid white !important;
+}
+
+.prettyLink{
+    text-decoration:none !important;
+    color:#5dc6bc;
+}
+
+
+.animated{
+    animation-duration: 2s;
+    animation-fill-mode: both;
+}
+
+@keyframes fadeInLeft {
+    0% {
+        transform: translateX(-500px);
+      }
+      .1%{
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+}
+
+.fadeInLeft {
+    animation-name: fadeInLeft;
+} 
+
+#signUp{
+    border:2px solid #5dc6bc; 
+    color:#5dc6bc; 
+    background:white; 
+    max-width:150px; 
+    padding:15px;
+    border-radius:15px;
+}
+
+.card img{
+    padding:30px;
+}
+
+.card {
+    font-size:18px!important;
+    min-height:175px;
+}
+
+.img{
+    display:none;
+}
+
+#image2{
+    text-align:left;
+}
+
+.card{
+    border:2px solid #5dc6bc;
+    text-align:center;
+    font-size:25px;
+    margin-top:15px;
+    box-shadow: 0px 0px 9px 5px rgba(228, 228, 228, 0.923);
+}
+
+.carousel-indicators{
+    margin:20px 40% 20px 40%;
+    position:inherit;
+    bottom:-65px; 
+}
+
+.carousel-indicators [data-bs-target]{
+    border-radius:100%;
+    width:30px;
+    height:30px;
+    background-color: rgb(49 111 105);
+    margin:5px 20px 50px 20px;
+}
+
+#carouselContainer{
+    display:none;
+}
+
+#bottomContainer{
+    padding:50px;
+    height:auto;
+    font-size:30px;
+    color:white;
+    background-image:url(resources/user.png);
+    background-repeat:no-repeat;
+    text-align:center;
+}
+
+#bottomContainer a{
+    align-self:center;
+}
+
+#disclaimerContainer{
+    background:rgb(232, 232, 232);
+    min-width:100%;
+    margin:50px 0px 50px 0px;
+    padding:10px 15px 10px 15px;
+    position:relative;
+}
+
+#disclaimerContainer::before{
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 80%;
+    margin-right:10px;
+    background-color: rgb(49 111 105);
+    margin-top:15px;
+}
+
+#rmButton{
+    color:rgb(49 111 105);
+    display:inline;
+}
+
+[aria-expanded="false"] > .expanded,
+[aria-expanded="true"] > .collapsed {
+  display: none;
+}
+
+#bottomLinks a{
+    color:white;  
+    text-decoration: none;
+}
+
+#bottomLinks a:hover{
+    color:rgb(0, 255, 204);
+    text-decoration:underline;
+}
+
+#copyRight{
+    max-width:none; 
+    text-align:center; 
+    background:#8de0d8; 
+    padding:10px;
+}
+
+@media(min-width:576px){
+    #inputBox{
+        width:400px;
+    }
+
+    .img{
+        display:block;
+    }
+
+    #image2{
+        text-align:right;
+    }
+
+    #disclaimerContainer{
+
+        padding:30px;
+        padding-left:100px;
+    }
+
+    #bottomContainer{
+        background-image:linear-gradient( to left, rgb(164 255 246 / 65%) 26%, rgb(31 116 108) 44% );
+        font-size:20px;
+        padding:0;
+    }
+
+    #backupCarousel{
+        display:none;
+    }
+
+    .slides{
+        animation:none;
+    }
+}
+
+@media(min-width:768px){
+    #inputBox{
+        width:600px;
+    }
+    
+    #carouselContainer{
+        display:block;
+    }
+
+    .card{
+        font-size:20px !important;
+        min-height:250px;
+    }
+
+    #disclaimerContainer::before{
+        height:70%;
+    }
+}
+
+@media(min-width:1000px)    
+{
+    #inputBox {
+        width:700px;
+    }
+
+    #bottomContainer {
+        font-size:37px;
+    }
+
+    .card {
+        font-size:25px !important;
+    }
+
+    #disclaimerContainer::before{
+        height:50%;
+    }
+}
+
+@media(min-width:1200px)
+{
+    .card{
+        width:300px;
+        height:325px;
+        padding:10% 20% 10% 20%;
+    }
+}
+
+@media(min-width:1300px){
+
+    video{
+        height:auto;
+        width:100vw;
+    }
+
+    #inputBox{
+        width:800px;
+    }
+}
