@@ -21,6 +21,7 @@ If you wish to contribute to the project, please read the [Contributing instruct
 You can find our App Map and Wire Frames in [UX Design](./UX-DESIGN.md).
 
 ## How To Run
+from the main folder, you first
 cd front-end
 npm start
 cd ..
@@ -28,3 +29,4 @@ cd back-end
 node server.js
 
 Then, in your browser navigate to whatever port the react project is served on(localhost:3000)
+
