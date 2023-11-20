@@ -45,7 +45,7 @@ const Game = (props) => {
             </thead>
             <tbody>
             {data.map((game,index) => (
-                        <tr key={game.id}>
+                        <tr className = "games-table" key={game.id}>
                             <td>{game.date}</td>
                             <td>{game.home_team.full_name}</td>
                             <td>{game.visitor_team.full_name}</td>

@@ -4,29 +4,42 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+
 }
 
-thead {
-    background-color: #f4f4f4;
+/*
+    Modifying this modifies each row
+*/
+table td {
+    background-color: #440a0a;
+
+}
+
+table td:nth-child(2n) {
+    background-color: #250a44;
+}
+
+table td:nth-child(3) {
+    background-color: rgb(92, 202, 224);
 }
 
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
+
 }
 
 th {
     background-color: #333;
     color: #fff;
+
 }
 
-tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
+.games-table {
+    background-color: rgb(70, 113, 165);
 
-tbody tr:hover {
-    background-color: #e0e0e0;
 }
 
 /* Adjust margins or paddings as needed */
+
