@@ -158,7 +158,7 @@ app.get("/games", async (req, res) => {
     const options = {
         /*
         params: {
-        seasons: [2023,2022]
+        seasons: [2023,2022,1998]
         }*/
       };
 
@@ -184,7 +184,7 @@ app.get("/games", async (req, res) => {
       }
   } catch (error) {
       console.error('Error fetching player stats: ', error);
-      res.status(500).json({ message: 'Error fetching player stats' });
+      res.status(500).json({ message: 'Error fetching player stats'});
   }
 });
 
