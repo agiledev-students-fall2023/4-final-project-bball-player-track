@@ -8,10 +8,10 @@ const Game = (props) => {
     const [data, setData] = useState([]);
 
     const options = {
-        /*
+        
         params: {
-        seasons: [2023,2022]
-        }*/
+        seasons: [2023,2022,1996]
+        }
     };
 
     React.useEffect(() => {
