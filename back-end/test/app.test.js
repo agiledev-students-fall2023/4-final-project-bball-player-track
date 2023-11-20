@@ -119,4 +119,55 @@ describe('API Routes', function() {
                 });
         });
     });
+
+
+
+
+    describe('Favorites Feature', function() {
+        // Test for retrieving user's favorite items
+        describe('GET /http://localhost:8080/favorites', function() {
+            it('should return a list of favorite items for a user', function(done) {
+                chai.request(app)
+                    .get('/api/favorites')
+                    // Optionally, set headers or send authentication details if needed
+                    .end(function(err, res) {
+                        expect(res).to.have.status(200);
+                        expect(res.body).to.be.an('array');
+                        // Add more specific checks here, e.g., structure of the favorite items
+                        done();
+                    });
+            });
+        });
+    
+        // Test for adding an item to favorites
+        describe('POST /http://localhost:8080/favorites', function() {
+            it('should add an item to the user’s favorites', function(done) {
+                chai.request(app)
+                    .post('/api/favorites')
+                    // Replace with the actual data structure you expect to receive
+                    .send({ itemId: '123', itemName: 'Test Item' })
+                    .end(function(err, res) {
+                        expect(res).to.have.status(201);
+                        expect(res.body).to.have.property('message', 'Item added to favorites');
+                        // More checks can be added here
+                        done();
+                    });
+            });
+        });
+    
+        // Test for removing an item from favorites
+        describe('DELETE /api/favorites/:itemId', function() {
+            it('should remove an item from the user’s favorites', function(done) {
+                chai.request(app)
+                    .delete('/api/favorites/123') // Replace '123' with a test item ID
+                    .end(function(err, res) {
+                        expect(res).to.have.status(200);
+                        expect(res.body).to.have.property('message', 'Item removed from favorites');
+                        // Additional checks can be added here
+                        done();
+                    });
+            });
+        });   
+    });
+    
 });
