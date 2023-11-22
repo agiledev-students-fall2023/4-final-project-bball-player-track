@@ -10,12 +10,13 @@ const Header = props => {
             </Link>
             <nav>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Basketball.png"
-                alt=""/>
+                    alt="" />
                 <Link to="/players">Players</Link>
                 <Link to="/teams">Teams</Link>
                 <Link to="/games">Games</Link>
                 <Link to="/favorites">Favorites</Link>
-                <Link to="/login" className="login-link">login</Link>
+                <Link to="/auth/login" className="login-link">Login</Link>
+                <Link to="/auth/signup" className="login-link">Sign up</Link>
             </nav>
         </div>
     );
