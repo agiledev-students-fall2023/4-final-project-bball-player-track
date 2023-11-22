@@ -11,7 +11,7 @@ const Login = () => {
         event.preventDefault();
         setError('');
         try {
-            const response = await fetch('http://localhost:8080/login', {
+            const response = await fetch('http://localhost:8080/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -27,27 +27,28 @@ const Login = () => {
                 setError(data.message || 'Login failed');
             }
         } catch (err) {
-            setError('Login failed');
+            setError('Network error, please try again');
         }
+
     };
 
     return (
         <div className="login-container">
-            
+
             <form className="login-form" onSubmit={handleSubmit}>
-                <input 
+                <input
                     className="login-input"
-                    type="text" 
-                    value={username} 
-                    onChange={(e) => setUsername(e.target.value)} 
-                    placeholder="Username" 
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Username"
                 />
-                <input 
+                <input
                     className="login-input"
-                    type="password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    placeholder="Password" 
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
                 />
                 {error && <p className="error-message">{error}</p>}
                 <button className="login-button" type="submit">Log in</button>

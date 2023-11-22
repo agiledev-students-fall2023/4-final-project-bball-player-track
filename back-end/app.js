@@ -1,154 +1,163 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const cookieParser = require("cookie-parser")
 const fetch = require('node-fetch');
 const axios = require("axios");
 require("dotenv").config({ silent: true });
 const morgan = require("morgan");
-app.use(morgan("dev"));
+
 const cors = require('cors');
+const authenticationRoutes = require("./routes/authentication.js")
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const jwt = require("jsonwebtoken")
+
+const mongoose = require("mongoose")
+const User = require("./models/User.js")
+
+try {
+  mongoose.connect(process.env.MONGODB_URI)
+  console.log(`Connected to MongoDB.`)
+} catch (err) {
+  console.log(
+    `Error connecting to MongoDB user account authentication will fail: ${err}`
+  )
+}
+
+const router = express.Router();
+
+app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" }))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
+
 app.use(cors({
-    origin: 'http://localhost:3000'
+  origin: 'http://localhost:3000'
 }));
-app.use("/static", express.static("public"));
 
+app.use("/static", express.static("public"));
+app.use("/auth", authenticationRoutes());
 
 app.get("/", async (req, res) => {
   try {
-      const [playerResponse, teamResponse] = await Promise.all([
-          axios.get('https://www.balldontlie.io/api/v1/players'),
-          axios.get('https://www.balldontlie.io/api/v1/teams')
-          
-      ]);
-      const players = playerResponse.data.data;
-      const shuffledPlayers = players.sort(() => 0.5 - Math.random());
-      const selectedPlayers = shuffledPlayers.slice(0, 20);
+    const [playerResponse, teamResponse] = await Promise.all([
+      axios.get('https://www.balldontlie.io/api/v1/players'),
+      axios.get('https://www.balldontlie.io/api/v1/teams')
 
-      const teams = teamResponse.data.data;
-      const shuffledTeams = teams.sort(() => 0.5 - Math.random());
-      const selectedTeams = shuffledTeams.slice(0, 20);
-      const data = {
-          players: selectedPlayers,
-          teams: selectedTeams
-      };
-      res.json(data);
+    ]);
+    const players = playerResponse.data.data;
+    const shuffledPlayers = players.sort(() => 0.5 - Math.random());
+    const selectedPlayers = shuffledPlayers.slice(0, 20);
+
+    const teams = teamResponse.data.data;
+    const shuffledTeams = teams.sort(() => 0.5 - Math.random());
+    const selectedTeams = shuffledTeams.slice(0, 20);
+    const data = {
+      players: selectedPlayers,
+      teams: selectedTeams
+    };
+    res.json(data);
   } catch (error) {
-      res.status(500).send(error.message);
+    res.status(500).send(error.message);
   }
 });
-let users = {
-  'user1': '1',
-  'user2': '2'
-};
 
-app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-
-  if (users[username] && users[username] === password) {
-      res.status(200).json({ message: 'Welcome' });
-  } else {
-      res.status(401).json({ message: 'Login failed' });
-  }
-});
 
 app.get('/favorites', async (req, res) => {
-    try {
-        // Fetch player stats from the API
-        const response = await axios.get('https://www.balldontlie.io/api/v1/stats', {
-            // Additional parameters can be added here to filter the stats as needed
-        });
-  
-        // Check if the API returned a list of player stats
-        if (response.data && response.data.data) {
-            const playerStats = response.data.data;
-            // Process and format the dates
-            const formattedPlayerStats = playerStats.map(player => {
-                const gameDate = new Date(player.game.date);
-                // Format the date to YYYY-MM-DD
-                const formattedDate = gameDate.toISOString().split('T')[0];
-                return {
-                    ...player,
-                    game: {
-                        ...player.game,
-                        date: formattedDate
-                    }
-                };
-            });
-  
-            // Shuffle the array and pick the first 10 items
-            const shuffledStats = formattedPlayerStats.sort(() => 0.5 - Math.random());
-            const selectedStats = shuffledStats.slice(0, 10);
-            
-            // Send the selected stats to the front end
-            res.json(selectedStats);
-        } else {
-            res.status(404).json({ message: 'No player stats found' });
-        }
-    } catch (error) {
-        console.error('Error fetching player stats: ', error);
-        res.status(500).json({ message: 'Error fetching player stats' });
+  try {
+    // Fetch player stats from the API
+    const response = await axios.get('https://www.balldontlie.io/api/v1/stats', {
+      // Additional parameters can be added here to filter the stats as needed
+    });
+
+    // Check if the API returned a list of player stats
+    if (response.data && response.data.data) {
+      const playerStats = response.data.data;
+      // Process and format the dates
+      const formattedPlayerStats = playerStats.map(player => {
+        const gameDate = new Date(player.game.date);
+        // Format the date to YYYY-MM-DD
+        const formattedDate = gameDate.toISOString().split('T')[0];
+        return {
+          ...player,
+          game: {
+            ...player.game,
+            date: formattedDate
+          }
+        };
+      });
+
+      // Shuffle the array and pick the first 10 items
+      const shuffledStats = formattedPlayerStats.sort(() => 0.5 - Math.random());
+      const selectedStats = shuffledStats.slice(0, 10);
+
+      // Send the selected stats to the front end
+      res.json(selectedStats);
+    } else {
+      res.status(404).json({ message: 'No player stats found' });
     }
+  } catch (error) {
+    console.error('Error fetching player stats: ', error);
+    res.status(500).json({ message: 'Error fetching player stats' });
+  }
 });
 app.get('/api/teams/stats', async (req, res) => {
   try {
-      const response = await axios.get('https://www.balldontlie.io/api/v1/teams');
+    const response = await axios.get('https://www.balldontlie.io/api/v1/teams');
 
-      if (response.data && response.data.data) {
-          const teams = response.data.data;
-          let teamStats = {};
+    if (response.data && response.data.data) {
+      const teams = response.data.data;
+      let teamStats = {};
 
-          teams.forEach(team => {
-              teamStats[team.id] = {
-                  id: team.id,
-                  full_name: team.full_name,
-                  wins: 0,
-                  losses: 0,
-                  // ... (initialize other stats)
-              };
+      teams.forEach(team => {
+        teamStats[team.id] = {
+          id: team.id,
+          full_name: team.full_name,
+          wins: 0,
+          losses: 0,
+          // ... (initialize other stats)
+        };
+      });
+
+      // Fetch games and update team stats
+      const today = new Date();
+      const endDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+      let page = 1;
+      let totalPages = 1;
+
+      do {
+        const gamesResponse = await axios.get(`https://www.balldontlie.io/api/v1/games?start_date=2023-10-18&end_date=${endDate}&per_page=100&page=${page}`);
+        if (gamesResponse.data && gamesResponse.data.data) {
+          const games = gamesResponse.data.data;
+          totalPages = gamesResponse.data.meta.total_pages;
+
+          games.forEach(game => {
+            const homeTeam = teamStats[game.home_team.id];
+            const visitorTeam = teamStats[game.visitor_team.id];
+
+            if (game.home_team_score > game.visitor_team_score) {
+              homeTeam.wins += 1;
+              visitorTeam.losses += 1;
+            } else {
+              homeTeam.losses += 1;
+              visitorTeam.wins += 1;
+            }
+            // ... (aggregate other stats)
           });
+        }
+        page++;
+      } while (page <= totalPages);
 
-          // Fetch games and update team stats
-          const today = new Date();
-          const endDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-          let page = 1;
-          let totalPages = 1;
+      // Convert to array
+      const statsArray = Object.values(teamStats);
 
-          do {
-              const gamesResponse = await axios.get(`https://www.balldontlie.io/api/v1/games?start_date=2023-10-18&end_date=${endDate}&per_page=100&page=${page}`);
-              if (gamesResponse.data && gamesResponse.data.data) {
-                  const games = gamesResponse.data.data;
-                  totalPages = gamesResponse.data.meta.total_pages;
-
-                  games.forEach(game => {
-                      const homeTeam = teamStats[game.home_team.id];
-                      const visitorTeam = teamStats[game.visitor_team.id];
-
-                      if (game.home_team_score > game.visitor_team_score) {
-                          homeTeam.wins += 1;
-                          visitorTeam.losses += 1;
-                      } else {
-                          homeTeam.losses += 1;
-                          visitorTeam.wins += 1;
-                      }
-                      // ... (aggregate other stats)
-                  });
-              }
-              page++;
-          } while (page <= totalPages);
-
-          // Convert to array
-          const statsArray = Object.values(teamStats);
-
-          res.json(statsArray);
-      } else {
-          res.status(404).json({ message: 'No teams found' });
-      }
+      res.json(statsArray);
+    } else {
+      res.status(404).json({ message: 'No teams found' });
+    }
   } catch (error) {
-      console.error('Error fetching team stats: ', error);
-      res.status(500).json({ message: 'Error fetching team stats' });
+    console.error('Error fetching team stats: ', error);
+    res.status(500).json({ message: 'Error fetching team stats' });
   }
 });
 
@@ -156,35 +165,35 @@ app.get("/games", async (req, res) => {
   try {
 
     const options = {
-        /*
-        params: {
-        seasons: [2023,2022,1998]
-        }*/
-      };
+      /*
+      params: {
+      seasons: [2023,2022,1998]
+      }*/
+    };
 
-      // Fetch player stats from the API
+    // Fetch player stats from the API
 
-      const response = await axios.get('https://www.balldontlie.io/api/v1/games',options);
+    const response = await axios.get('https://www.balldontlie.io/api/v1/games', options);
 
-      // Check if the API returned a list of player stats
-      if(response.data && response.data.data) {
-          const games = response.data.data;
-          // Process and format the dates
-          const formattedPlayerStats = games.map((game,index) => {
-              const formattedDate = game.date.split('T')[0];
-              game.date = formattedDate;
-              return game;
-          });
-          
-          // Send the selected stats to the front end
-          //console.table(formattedPlayerStats);
-          res.json(formattedPlayerStats);
-      } else {
-          res.status(404).json({ message: 'No player stats found' });
-      }
+    // Check if the API returned a list of player stats
+    if (response.data && response.data.data) {
+      const games = response.data.data;
+      // Process and format the dates
+      const formattedPlayerStats = games.map((game, index) => {
+        const formattedDate = game.date.split('T')[0];
+        game.date = formattedDate;
+        return game;
+      });
+
+      // Send the selected stats to the front end
+      //console.table(formattedPlayerStats);
+      res.json(formattedPlayerStats);
+    } else {
+      res.status(404).json({ message: 'No player stats found' });
+    }
   } catch (error) {
-      console.error('Error fetching player stats: ', error);
-      res.status(500).json({ message: 'Error fetching player stats'});
+    console.error('Error fetching player stats: ', error);
+    res.status(500).json({ message: 'Error fetching player stats' });
   }
 });
 
@@ -259,32 +268,32 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
 
   try {
     const currentDate = new Date();
-    const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); 
+    const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
     const currentDay = String(currentDate.getDate()).padStart(2, '0');
     const currentYear = currentDate.getFullYear();
     const currentDateFinal = `${currentYear}-${currentMonth}-${currentDay}`;
-  
+
     const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); 
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
     const oneWeekAgoMonth = String(oneWeekAgo.getMonth() + 1).padStart(2, '0');
     const oneWeekAgoDay = String(oneWeekAgo.getDate()).padStart(2, '0');
     const oneWeekAgoYear = oneWeekAgo.getFullYear();
     const oneWeekAgoFinal = `${oneWeekAgoYear}-${oneWeekAgoMonth}-${oneWeekAgoDay}`;
-    
+
     const firstResponse = await axios.get(`https://www.balldontlie.io/api/v1/stats?per_page=100&start_date=${oneWeekAgoFinal}&end_date=${currentDateFinal}`);
     const totalPages = firstResponse.data.meta.total_pages;
     let playersOnTeam = [];
 
-    for (let page = 1; page <= totalPages; page ++){
+    for (let page = 1; page <= totalPages; page++) {
       const currentResponse = await axios.get(`https://www.balldontlie.io/api/v1/stats?per_page=100&start_date=${oneWeekAgoFinal}&end_date=${currentDateFinal}&page=${page}`);
       const currentData = currentResponse.data.data;
-      
 
-      currentData.forEach(item =>{
 
-        if (item.team.full_name === teamName){
-          const playerSeenAlready = playersOnTeam.find(player=> player.playerId === item.player.id);
-          if (!playerSeenAlready){
+      currentData.forEach(item => {
+
+        if (item.team.full_name === teamName) {
+          const playerSeenAlready = playersOnTeam.find(player => player.playerId === item.player.id);
+          if (!playerSeenAlready) {
             playersOnTeam.push({
               playerName: item.player.first_name,
               playerId: item.player.id
@@ -292,20 +301,20 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
           }
         }
       })
-      
+
     }
-   
-   
+
+
     res.json(playersOnTeam);
-    
+
 
 
 
 
 
   } catch (error) {
-      console.error('Error fetching team players: ', error);
-      res.status(500).json({ message: 'Error fetching team players ' });
+    console.error('Error fetching team players: ', error);
+    res.status(500).json({ message: 'Error fetching team players ' });
   }
 
 
@@ -316,15 +325,15 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
 app.post('/api/teamplayer', async (req, res) => {
   const { playerNames, playerIDs } = req.body;
 
-  try{
+  try {
     const response = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?player_ids[]=${playerIDs[0]}&player_ids[]=${playerIDs[1]}&player_ids[]=${playerIDs[2]}&player_ids[]=${playerIDs[3]}&player_ids[]=${playerIDs[4]}&player_ids[]=${playerIDs[5]}&player_ids[]=${playerIDs[6]}&player_ids[]=${playerIDs[7]}&player_ids[]=${playerIDs[8]}&player_ids[]=${playerIDs[9]}&player_ids[]=${playerIDs[10]}&player_ids[]=${playerIDs[11]}&player_ids[]=${playerIDs[12]}&player_ids[]=${playerIDs[13]}&player_ids[]=${playerIDs[14]}&player_ids[]=${playerIDs[15]}&player_ids[]=${playerIDs[16]}&player_ids[]=${playerIDs[17]}`);
-    console.log (response.data);
+    console.log(response.data);
     let teamPlayerData = [];
 
-    for (let i = 0; i < 18; i++){
-      for (let j = 0; j<response.data.data.length; j++){
+    for (let i = 0; i < 18; i++) {
+      for (let j = 0; j < response.data.data.length; j++) {
 
-        if (playerIDs[i]===response.data.data[j].player_id){
+        if (playerIDs[i] === response.data.data[j].player_id) {
           teamPlayerData.push({
             Name: playerNames[i],
             Gp: response.data.data[j].games_played,
@@ -341,15 +350,15 @@ app.post('/api/teamplayer', async (req, res) => {
       }
     }
 
-    console.log (teamPlayerData);
+    console.log(teamPlayerData);
 
-    res.json (teamPlayerData);
+    res.json(teamPlayerData);
 
   } catch (error) {
-      console.error('Error fetching player stats: ', error);
-      res.status(500).json({ message: 'Error fetching player stats ' });
+    console.error('Error fetching player stats: ', error);
+    res.status(500).json({ message: 'Error fetching player stats ' });
   }
 });
 
- 
+
 module.exports = app
