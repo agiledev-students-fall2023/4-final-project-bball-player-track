@@ -11,8 +11,7 @@ import PlayerStats from './PlayerStats';
 import Teams from './Teams'; // Import the Teams component
 import Players from './Players'; // Import the Players component
 import Games from './components/game.mjs';
-import Login from './Login';
-import Signup from './Signup';
+import Auth from './Auth';
 
 const App = props => {
   return (
@@ -31,8 +30,7 @@ const App = props => {
             <Route path = "/games" element = {<Games/>}/>
             <Route path="/teams" element={<Teams />} /> {/* Route for Teams */}
             <Route path="/players" element={<Players />} /> {/* Route for Players */}
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/signup" element={<Signup />} />
+            <Route path="/auth" element={<Auth />} />
           </Routes>
         </main>
       </Router>
