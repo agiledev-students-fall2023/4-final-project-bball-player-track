@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css'
-const Login = () => {
+import './Auth.css'
+const Auth = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -11,7 +11,7 @@ const Login = () => {
         event.preventDefault();
         setError('');
         try {
-            const response = await fetch('http://localhost:8080/auth/login', {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND}/auth`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -36,12 +36,14 @@ const Login = () => {
         <div className="login-container">
 
             <form className="login-form" onSubmit={handleSubmit}>
+                Welcome to BBall Player Tracker!
                 <input
                     className="login-input"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Username"
+                    required
                 />
                 <input
                     className="login-input"
@@ -49,12 +51,13 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
+                    required
                 />
                 {error && <p className="error-message">{error}</p>}
-                <button className="login-button" type="submit">Log in</button>
+                <button className="login-button" type="submit">Log in / Sign up</button>
             </form>
         </div>
     );
 }
 
-export default Login;
+export default Auth;
