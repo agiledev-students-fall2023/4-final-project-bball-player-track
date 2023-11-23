@@ -1,40 +1,38 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .navbar {
-    background-color: black;
+    background-color: #1a1a1a; 
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 10px 50px;
 }
-nav {
-    display: flex;
-    align-items: center;
-}
+
 .header {
-    color: white;
+    color: #ff8c00;
     text-decoration: none;
     font-size: 24px;
-    font-weight: normal;
-    border-bottom: none;
-    margin-right: auto; 
+    margin: 0;
 }
 
-.navbar a {
+.navbar a, .navbar button {
     color: white;
     text-align: center;
-    padding: 0;
     text-decoration: none;
     font-size: 18px;
     margin: 0 15px;
-    background-color: transparent; 
-    border: none; 
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 }
 
-.navbar a:hover {
-    color: #ddd;
-    background-color: transparent; 
+.navbar a:hover, .navbar button:hover {
+    color: #ff8c00;
 }
 
 .navbar img {
@@ -49,7 +47,16 @@ nav {
     transition: background-color 0.3s, color 0.3s;
 }
 
-.loginin-link:hover {
-    color: black;
+.login-link:hover {
+    color: #1a1a1a;
     background-color: white;
 }
+
+.header-username {
+    background-color: #000;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  
