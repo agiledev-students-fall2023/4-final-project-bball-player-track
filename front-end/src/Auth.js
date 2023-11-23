@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Auth.css'
+import './Auth.css';
+
 const Auth = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError('');
@@ -20,21 +19,26 @@ const Auth = () => {
             });
 
             const data = await response.json();
-
+            
             if (response.ok) {
-                navigate('/');
+                
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('username', username);
+                
+                // window.location.href = process.env.REACT_APP_FRONTEND;
+                
+                window.location.href = 'http://localhost:3000';
+
             } else {
                 setError(data.message || 'Login failed');
             }
         } catch (err) {
             setError('Network error, please try again');
         }
-
     };
 
     return (
         <div className="login-container">
-
             <form className="login-form" onSubmit={handleSubmit}>
                 Welcome to BBall Player Tracker!
                 <input
@@ -58,6 +62,6 @@ const Auth = () => {
             </form>
         </div>
     );
-}
+};
 
 export default Auth;
