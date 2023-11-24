@@ -17,7 +17,7 @@ const authenticationRouter = () => {
         return res.status(400).json({
           success: false,
           errors: errors.array(),
-          message: "Validation failed. Username and password must be between 4 and 20 characters."
+          message: "Try again. Username and password must be between 4 and 20 characters."
         });
       }
       const { username, password } = req.body;

@@ -18,7 +18,7 @@
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ddd;
-    box-sizing: border-box; /* Add this line to include padding in width */
+    box-sizing: border-box;
   }
   
   .login-button {
@@ -35,8 +35,7 @@
     color: red;
     text-align: center;
   }
-  
-  /* Additional styles for placeholders and error message */
+
   ::placeholder {
     color: #999;
   }
