@@ -49,9 +49,6 @@ const Auth = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Username"
-                    minLength="4"
-                    maxLength="20"
-                    required
                 />
                 <input
                     className="login-input"
@@ -59,9 +56,6 @@ const Auth = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
-                    minLength="4"
-                    maxLength="20"
-                    required
                 />
                 {error && <p className="error-message">{error}</p>}
                 <button className="login-button" type="submit">Log in / Sign up</button>
