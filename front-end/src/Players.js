@@ -4,35 +4,18 @@ import './Players.css';
 
 const Players = () => {
     const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    const fetchData = async (forceRefresh = false) => {
-        setIsLoading(true);
-        try {
-            const result = await axios.get(`http://localhost:8080/api/players/stats${forceRefresh ? '?forceRefresh=true' : ''}`);
-            const sortedData = result.data.sort((a, b) => parseFloat(b.ppg) - parseFloat(a.ppg));
-            setData(sortedData);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     useEffect(() => {
+        const fetchData = async () => {
+            const result = await axios.get('http://localhost:8080/api/players/stats');
+            setData(result.data);
+        };
         fetchData();
     }, []);
 
-    const handleRefresh = () => {
-        fetchData(true);
-    };
-
     return (
         <div className="players">
-            <h2>Top Players of the League</h2>
-            <button onClick={handleRefresh} disabled={isLoading}>
-                Refresh Data
-            </button>
+            <h2>NBA Players - Top Performers</h2>
             <table>
                 <thead>
                     <tr>
@@ -44,21 +27,15 @@ const Players = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.length > 0 ? (
-                        data.map((player, index) => (
-                            <tr key={index}>
-                                <td>{player.fullName}</td>
-                                <td>{player.ppg}</td>
-                                <td>{player.apg}</td>
-                                <td>{player.spg}</td>
-                                <td>{player.rpg}</td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="5">No data available</td>
+                    {data.map((player, index) => (
+                        <tr key={index}>
+                            <td>{player.fullName}</td>
+                            <td>{player.ppg}</td>
+                            <td>{player.apg}</td>
+                            <td>{player.spg}</td>
+                            <td>{player.rpg}</td>
                         </tr>
-                    )}
+                    ))}
                 </tbody>
             </table>
         </div>
