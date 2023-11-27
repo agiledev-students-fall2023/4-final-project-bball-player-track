@@ -13,10 +13,14 @@ const authenticationRoutes = require("./routes/authentication.js")
 const jwt = require("jsonwebtoken")
 
 const mongoose = require("mongoose")
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const User = require("./models/User.js")
 
+const username = encodeURIComponent(process.env.DB_USERNAME);
+const password = encodeURIComponent(process.env.DB_PASSWORD);
+const uri = `mongodb+srv://${username}:${password}@bballplayertrack.yldebfu.mongodb.net/?retryWrites=true&w=majority`;
 try {
-  mongoose.connect(process.env.MONGODB_URI)
+  mongoose.connect(uri);
   console.log(`Connected to MongoDB.`)
 } catch (err) {
   console.log(
