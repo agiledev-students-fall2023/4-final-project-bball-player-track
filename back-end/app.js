@@ -347,13 +347,43 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
 
 })
 
+
+const TeamPlayerStat = require("./models/TeamPlayerStat.js");
+
 app.post('/api/teamplayer', async (req, res) => {
   const { playerNames, playerIDs } = req.body;
 
   try {
-    const response = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?player_ids[]=${playerIDs[0]}&player_ids[]=${playerIDs[1]}&player_ids[]=${playerIDs[2]}&player_ids[]=${playerIDs[3]}&player_ids[]=${playerIDs[4]}&player_ids[]=${playerIDs[5]}&player_ids[]=${playerIDs[6]}&player_ids[]=${playerIDs[7]}&player_ids[]=${playerIDs[8]}&player_ids[]=${playerIDs[9]}&player_ids[]=${playerIDs[10]}&player_ids[]=${playerIDs[11]}&player_ids[]=${playerIDs[12]}&player_ids[]=${playerIDs[13]}&player_ids[]=${playerIDs[14]}&player_ids[]=${playerIDs[15]}&player_ids[]=${playerIDs[16]}&player_ids[]=${playerIDs[17]}`);
-    console.log(response.data);
+    const lastUpdateThreshold = 24 * 60 * 60 * 1000;
     let teamPlayerData = [];
+
+      const Stats = await TeamPlayerStat.find({ playerID: { $in: playerIDs } });
+      const lastStat = await TeamPlayerStat.findOne({ playerID: { $in: playerIDs } }).sort({ lastUpdated: -1 });
+      if (lastStat && new Date() - lastStat.lastUpdated < lastUpdateThreshold) {
+        for (let i = 0; i < 18; i ++){
+          const playerData = Stats[i];
+
+          if (playerData) {
+            teamPlayerData.push({
+              Name: playerData.Name,
+              Gp: playerData.Gp,
+              Min: playerData.Min,
+              Pts: playerData.Pts,
+              Reb: playerData.Reb,
+              Ast: playerData.Ast,
+              Stl: playerData.Stl,
+              Blk: playerData.Blk,
+              To: playerData.To,
+              Pf: playerData.Pf,
+              lastUpdated: playerData.lastUpdated
+            });
+        }
+        res.json (teamPlayerData);
+        return
+      }
+    
+    const response = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?player_ids[]=${playerIDs[0]}&player_ids[]=${playerIDs[1]}&player_ids[]=${playerIDs[2]}&player_ids[]=${playerIDs[3]}&player_ids[]=${playerIDs[4]}&player_ids[]=${playerIDs[5]}&player_ids[]=${playerIDs[6]}&player_ids[]=${playerIDs[7]}&player_ids[]=${playerIDs[8]}&player_ids[]=${playerIDs[9]}&player_ids[]=${playerIDs[10]}&player_ids[]=${playerIDs[11]}&player_ids[]=${playerIDs[12]}&player_ids[]=${playerIDs[13]}&player_ids[]=${playerIDs[14]}&player_ids[]=${playerIDs[15]}&player_ids[]=${playerIDs[16]}&player_ids[]=${playerIDs[17]}`);
+
 
     for (let i = 0; i < 18; i++) {
       for (let j = 0; j < response.data.data.length; j++) {
@@ -375,15 +405,15 @@ app.post('/api/teamplayer', async (req, res) => {
       }
     }
 
-    console.log(teamPlayerData);
 
     res.json(teamPlayerData);
 
+  }
   } catch (error) {
     console.error('Error fetching player stats: ', error);
     res.status(500).json({ message: 'Error fetching player stats ' });
   }
-});
+})
 
 
 module.exports = app
