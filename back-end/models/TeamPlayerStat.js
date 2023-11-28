@@ -3,7 +3,7 @@ const mongoose = require ('mongoose')
 const teamPlayerStatSchema = new mongoose.Schema({
     Name: String,
     Gp: Number,
-    Min: Number,
+    Min: String,
     Pts: Number,
     Reb: Number,
     Ast: Number,
