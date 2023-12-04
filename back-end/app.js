@@ -9,7 +9,7 @@ const morgan = require("morgan");
 
 const cors = require('cors');
 const authenticationRoutes = require("./routes/authentication.js")
-
+const { body, validationResult } = require('express-validator');
 const jwt = require("jsonwebtoken")
 
 const mongoose = require("mongoose")
@@ -43,6 +43,8 @@ app.use(cors({
 app.use("/static", express.static("public"));
 app.use("/auth", authenticationRoutes());
 
+const Feedback = require("./models/Feedback.js");
+
 app.get("/", async (req, res) => {
   try {
     const [playerResponse, teamResponse] = await Promise.all([
@@ -66,6 +68,7 @@ app.get("/", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
 
 router.get('/searchPlayer', async (req, res) => {
   const searchTerm = req.query.query;
@@ -146,6 +149,26 @@ app.delete('/user/:userId/removeFavorite', async (req, res) => {
 });
 
 module.exports = router;
+
+app.post('/', body('feedback').not().isEmpty().withMessage('You must input something'), async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const feedback = new Feedback({
+      feedback: req.body.feedback
+    });
+
+    await feedback.save();
+    res.send({ status: 'Feedback saved' });
+  } catch (err) {
+    res.status(500).send({ status: 'You must input something', error: err });
+  }
+})
+
+
 
 app.get('/favorites', async (req, res) => {
   try {
