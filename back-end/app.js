@@ -9,7 +9,7 @@ const morgan = require("morgan");
 
 const cors = require('cors');
 const authenticationRoutes = require("./routes/authentication.js")
-
+const { body, validationResult } = require('express-validator');
 const jwt = require("jsonwebtoken")
 
 const mongoose = require("mongoose")
@@ -42,6 +42,8 @@ app.use(cors({
 app.use("/static", express.static("public"));
 app.use("/auth", authenticationRoutes());
 
+const Feedback = require("./models/Feedback.js");
+
 app.get("/", async (req, res) => {
   try {
     const [playerResponse, teamResponse] = await Promise.all([
@@ -65,6 +67,24 @@ app.get("/", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+app.post('/', body('feedback').not().isEmpty().withMessage('You must input something'), async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const feedback = new Feedback({
+      feedback: req.body.feedback
+    });
+
+    await feedback.save();
+    res.send({ status: 'Feedback saved' });
+  } catch (err) {
+    res.status(500).send({ status: 'You must input something', error: err });
+  }
+})
 
 
 app.get('/favorites', async (req, res) => {
@@ -360,7 +380,7 @@ app.post('/api/teamplayer', async (req, res) => {
     const Stats = await TeamPlayerStat.find({ Name: { $in: playerNames } });
     const lastStat = await TeamPlayerStat.findOne({ Name: { $in: playerNames } }).sort({ lastUpdated: -1 });
     if (lastStat && new Date() - lastStat.lastUpdated < lastUpdateThreshold) {
-      for (let i = 0; i < 18; i ++){
+      for (let i = 0; i < 18; i++) {
         const playerData = Stats[i];
 
         if (playerData) {
@@ -376,11 +396,11 @@ app.post('/api/teamplayer', async (req, res) => {
             To: playerData.To,
             Pf: playerData.Pf,
             lastUpdated: playerData.lastUpdated
-            });
+          });
         }
-        
+
       }
-      return res.json (teamPlayerData);
+      return res.json(teamPlayerData);
     }
     const response = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?player_ids[]=${playerIDs[0]}&player_ids[]=${playerIDs[1]}&player_ids[]=${playerIDs[2]}&player_ids[]=${playerIDs[3]}&player_ids[]=${playerIDs[4]}&player_ids[]=${playerIDs[5]}&player_ids[]=${playerIDs[6]}&player_ids[]=${playerIDs[7]}&player_ids[]=${playerIDs[8]}&player_ids[]=${playerIDs[9]}&player_ids[]=${playerIDs[10]}&player_ids[]=${playerIDs[11]}&player_ids[]=${playerIDs[12]}&player_ids[]=${playerIDs[13]}&player_ids[]=${playerIDs[14]}&player_ids[]=${playerIDs[15]}&player_ids[]=${playerIDs[16]}&player_ids[]=${playerIDs[17]}`);
 
@@ -409,7 +429,7 @@ app.post('/api/teamplayer', async (req, res) => {
     await TeamPlayerStat.insertMany(teamPlayerData);
     res.json(teamPlayerData);
 
-  
+
   } catch (error) {
     console.error('Error fetching player stats: ', error);
     res.status(500).json({ message: 'Error fetching player stats ' });

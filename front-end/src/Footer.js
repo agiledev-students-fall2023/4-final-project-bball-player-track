@@ -9,7 +9,22 @@ const Footer = () => {
     };
 
     const handleFeedbackSubmit = () => {
-        console.log(`Feedback submitted: ${feedback}`);
+        fetch(`${process.env.REACT_APP_BACKEND}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ feedback }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'Feedback saved') {
+                    alert('Feedback saved successfully!');
+                } else {
+                    alert('You have to write something.');
+                }
+            })
+
         setFeedback('');
     };
 
