@@ -1,68 +1,155 @@
-/* FavoritesPage.css */
+.table-players {
 
-.favoritesPage {
-    width: 80%;
-    margin: 0 auto;
-    text-align: center;
-}
-
-table {
-    width: 100%;
+    max-width: 100%;
     border-collapse: collapse;
+    width: 700px;
+    margin: 20px auto;
+    /* Center the table vertically */
+    background-color: #f5f5f5;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-table, th, td {
-    border: 1px solid black;
-}
-
-th, td {
+.table-players th,
+.table-players td {
     padding: 10px;
-}
-
-nav a {
-    margin-right: 10px;
-}
-
-a {
-    text-decoration: none;
-    color: inherit; /* Inherit the color from the parent */
-}
-
-/* Change link color to blue when hovered */
-a:hover {
-    color: blue;
-}
-
-/* Tooltip container */
-.tooltip {
-    position: relative;
-    cursor: pointer; /* Optional: adds a pointer cursor on hover */
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: auto; /* Adjusted to auto to fit content */
-    background-color: black;
-    color: #fff;
     text-align: center;
-    border-radius: 6px;
-    padding: 5px 10px; /* Add horizontal padding */
+    border: 1px solid #ddd;
 
-    /* Position the tooltip text */
-    position: absolute;
-    z-index: 1;
-    bottom: 125%; /* Adjusted to push tooltip further down */
-    left: 50%;
-    transform: translateX(-50%); /* Use transform for better centering */
-
-    /* Fade in tooltip */
-    opacity: 0;
-    transition: opacity 0.3s;
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
+.table-players th {
+    background-color: #333;
+    color: #fff;
+}
+
+.table-players tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.search-results {
+
+    margin-top: 20px;
+}
+
+.search-results thead .table-players thead {
+    display: none;
+}
+
+
+.search-box {
+    margin: auto;
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
+
+.search-box input {
+    height: 30px;
+}
+
+
+
+.search-dropdown.active {
+    display: block;
+}
+
+.search-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.search-item:hover {
+    background-color: #f4f4f4;
+}
+
+.add-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    padding: 10px 0;
+    border-radius: 4px;
+}
+
+.add-button:hover {
+    background-color: #45a049;
+}
+
+.refresh-button {
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+.refresh-button:hover {
+    background-color: #007bb8;
+}
+
+.favorite-title {
+    font-size: 24px;
+    color: white;
+    text-shadow: 2px 2px black;
+    margin-bottom: 20px;
+}
+
+.table-players tr:hover {
+    background-color: #f4f4f4;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.delete-button:hover {
+    background-color: #f43630;
+}
+
+
+
+
+.table-players th,
+.table-players td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-players tr:hover {
+    background-color: #f5f5f5;
+}
+
+.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.page-item {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    margin-right: 5px;
+}
+
+.page-item:hover {
+    background-color: #f5f5f5;
+}
+
+
+
+.add-button:hover,
+.delete-button:hover,
+.refresh-button:hover {
+    background-color: #45a049;
 }

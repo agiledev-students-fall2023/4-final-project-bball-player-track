@@ -1,115 +1,254 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import axios from 'axios';
-
-
-//import { AuthContext } from './path/to/AuthContext'; // Update with actual path
 import './Favorites.css';
+import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
+
 
 const FavoritesPage = () => {
-    const [playerStats, setPlayerStats] = useState([]);
-    //const { isAuthenticated, authToken } = useContext(AuthContext); // Assuming you have an AuthContext
+    const [searchTerm, setSearchTerm] = useState('');
+    const [players, setPlayers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [userId, setUserId] = useState(null);
+    const [combinedFavorites, setCombinedFavorites] = useState([]);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1); 
+    const [playersPerPage, setPlayersPerPage] = useState(10); 
+    const [totalPages, setTotalPages] = useState(0); 
+    const navigate = useNavigate();
+
+    useLayoutEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token && window.location.pathname !== '/auth') {
+            alert('Please log in to access your favorites.');
+            navigate('/auth');
+        }
+    }, [navigate]);
+
 
     useEffect(() => {
-        const fetchRandomPlayerStats = async () => {
-            /*if (!isAuthenticated) {
-                // Handle the case when the user is not authenticated
-                return;
-            }*/
 
-            try {
-                const response = await axios.get('http://localhost:8080/favorites', {
-                    //headers: {
-                      //  Authorization: `Bearer ${authToken}` // Include the auth token in the request
-                    //}
-                });
-                setPlayerStats(response.data);
-            } catch (error) {
-                console.error('Error fetching random player stats:', error);
-                // Handle error or set some default state
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            const decoded = jwtDecode(token);
+            setUserId(decoded.id);
+        }
+    }, []);
+
+    s
+
+
+    const fetchPlayerStats = async (playerId) => {
+        try {
+            const response = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?player_ids[]=${playerId}`);
+            return response.data.data[0];
+        } catch (error) {
+            console.error('Error fetching player stats:', error);
+            return null; 
+        }
+    };
+
+    const searchPlayers = async (page = 1) => {
+        if (!searchTerm.trim()) {
+            setShowDropdown(false);
+            return;
+        }
+
+        setLoading(true);
+        setCurrentPage(page);
+        try {
+            const response = await axios.get(`https://www.balldontlie.io/api/v1/players`, {
+                params: {
+                    search: searchTerm,
+                    page: page,
+                    per_page: playersPerPage
+                }
+            });
+            const totalPlayers = response.data.meta.total_count; 
+            setTotalPages(Math.ceil(totalPlayers / playersPerPage)); 
+
+            const searchResults = await Promise.all(response.data.data.map(async player => {
+                const stats = await fetchPlayerStats(player.id);
+                return { ...player, stats };
+            }));
+
+            const sortedResults = searchResults.filter(player => player.stats)
+                .concat(searchResults.filter(player => !player.stats));
+
+            setPlayers(sortedResults);
+            setShowDropdown(true);
+        } catch (error) {
+            console.error('Error fetching players:', error);
+        }
+        setLoading(false);
+    };
+
+
+    const renderPagination = () => {
+        return (
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                        key={index}
+                        className={`page-item ${index + 1 === currentPage ? 'active' : ''}`}
+                        onClick={() => searchPlayers(index + 1)}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+            </div>
+        );
+    };
+
+
+    const addFavorite = async (playerId) => {
+        try {
+            const response = await axios.post(`http://localhost:8080/user/${userId}/addFavorite`, { playerId });
+            if (response.status === 200) {
+                console.log('Player added to favorites');
+                alert('Player added to favorites');
             }
-        };
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                console.error('Error adding favorite:', error.response.data);
+                alert(error.response.data); 
+            } else {
+                console.error('Error adding favorite:', error);
+                alert('An error occurred while adding the player to favorites');
+            }
+        }
+    };
 
-        fetchRandomPlayerStats();
-    },[]); //[isAuthenticated, authToken]); // Add dependencies here
+
+    const removeFavorite = async (playerId) => {
+        try {
+            await axios.delete(`http://localhost:8080/user/${userId}/removeFavorite`, { data: { playerId } });
+            fetchFavorites(); // Refresh favorites after removing
+        } catch (error) {
+            console.error('Error removing favorite:', error);
+        }
+    };
+
+    const fetchFavorites = async () => {
+        if (userId) {
+            try {
+                const response = await axios.get(`http://localhost:8080/user/${userId}/favorites`);
+                const favoritePlayerIds = response.data;
+                // Fetch player details and stats
+                const playerDetails = await Promise.all(favoritePlayerIds.map(playerId =>
+                    axios.get(`https://www.balldontlie.io/api/v1/players/${playerId}`)));
+                const playerStats = await Promise.all(favoritePlayerIds.map(playerId =>
+                    axios.get(`https://www.balldontlie.io/api/v1/season_averages?player_ids[]=${playerId}`)));
+
+                const fetchedFavorites = playerDetails.map((detail, index) => ({
+                    id: detail.data.id,
+                    name: `${detail.data.first_name} ${detail.data.last_name}`,
+                    stats: playerStats[index].data.data[0]
+                }));
+
+                setCombinedFavorites(fetchedFavorites);
+            } catch (error) {
+                console.error('Error fetching favorites:', error);
+            }
+        }
+    };
+
+
+
+    useEffect(() => {
+        fetchFavorites();
+    }, [userId]);
 
     return (
-        <div className="teamStats">
-            {/* Header and rest of the code remains the same */}
+        <div>
+            <h3 className="favorite-title">My Favorites</h3>
 
-            <h2>Player Stats</h2>
-            {/* Player Stats Table */}
-            <table>
+            <table className="table-players">
                 <thead>
-                <tr>
-                    <th class="tooltip">NAME
-                        <span class="tooltiptext">Player Name</span>
-                    </th>
-                    <th class="tooltip">GP
-                        <span class="tooltiptext">Games Played</span>
-                    </th>
-                    <th class="tooltip">MIN
-                        <span class="tooltiptext">Minutes Per Game</span>
-                    </th>
-                    <th class="tooltip">PTS
-                        <span class="tooltiptext">Points Per Game</span>
-                    </th>
-                    <th class="tooltip">OR
-                        <span class="tooltiptext">Offensive Rebounds Per Game</span>
-                    </th>
-                    <th class="tooltip">DR
-                        <span class="tooltiptext">Defensive Rebounds Per Game</span>
-                    </th>
-                    <th class="tooltip">REB
-                        <span class="tooltiptext">Total Rebounds Per Game</span>
-                    </th>
-                    <th class="tooltip">AST
-                        <span class="tooltiptext">Assists Per Game</span>
-                    </th>
-                    <th class="tooltip">STL
-                        <span class="tooltiptext">Steals Per Game</span>
-                    </th>
-                    <th class="tooltip">BLK
-                        <span class="tooltiptext">Blocks Per Game</span>
-                    </th>
-                    <th class="tooltip">TO
-                        <span class="tooltiptext">Turnovers Per Game</span>
-                    </th>
-                    <th class="tooltip">PF
-                        <span class="tooltiptext">Personal Fouls Per Game</span>
-                    </th>
-                </tr>
-
-
+                    <tr>
+                        <th>Player</th>
+                        <th>Points Per Game</th>
+                        <th>Assists Per Game</th>
+                        <th>Steals Per Game</th>
+                        <th>Rebounds Per Game</th>
+                        <th>Action</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    {playerStats.length > 0 ? (
-                        playerStats.map((player, index) => (
-                            <tr key={index}>
-                                <td>{player.player.first_name} {player.player.last_name}</td>
-                                <td>{player.game.date}</td>
-                                <td>{player.min}</td>
-                                <td>{player.pts}</td>
-                                <td>{player.oreb}</td>
-                                <td>{player.dreb}</td>
-                                <td>{player.reb}</td>
-                                <td>{player.ast}</td>
-                                <td>{player.stl}</td>
-                                <td>{player.blk}</td>
-                                <td>{player.turnover}</td>
-                                <td>{player.pf}</td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="14">Loading player stats...</td>
+                    {combinedFavorites.map((player, index) => (
+                        <tr key={index}>
+                            <td>{player.name}</td>
+                            <td>{player.stats?.pts || 'N/A'}</td>
+                            <td>{player.stats?.ast || 'N/A'}</td>
+                            <td>{player.stats?.stl || 'N/A'}</td>
+                            <td>{player.stats?.reb || 'N/A'}</td>
+                            <td>
+                                <button className="delete-button" onClick={() => removeFavorite(player.id)}>
+                                    Delete
+                                </button>
+                            </td>
                         </tr>
-                    )}
+                    ))}
                 </tbody>
             </table>
+            <h3 className="favorite-title">Add new players</h3>
+
+            <div className="search-box">
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Enter player name"
+                />
+                <button className="refresh-button" onClick={searchPlayers} disabled={loading}>Search</button>
+                <button className="refresh-button" onClick={fetchFavorites}>Refresh</button>
+
+            </div>
+
+
+
+            {showDropdown && (
+                <div className="search-results">
+                    <table className="table-players">
+                        <thead>
+                            <tr>
+                                <th>Player</th>
+                                <th>Points Per Game</th>
+                                <th>Assists Per Game</th>
+                                <th>Steals Per Game</th>
+                                <th>Rebounds Per Game</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {players.map((player, index) => (
+                                <tr key={`player-${player.id}-${index}`}>
+                                    <td>{player.first_name} {player.last_name}</td>
+                                    <td>{player.stats?.pts || 'N/A'}</td>
+                                    <td>{player.stats?.ast || 'N/A'}</td>
+                                    <td>{player.stats?.stl || 'N/A'}</td>
+                                    <td>{player.stats?.reb || 'N/A'}</td>
+                                    <td>
+                                        <button className="add-button" onClick={() => addFavorite(player.id)}>
+                                            Add
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+            )}
+            {showDropdown && players.length > 0 && renderPagination()}
+
+
+
+
+
         </div>
     );
-
-
-}
+};
 
 export default FavoritesPage;
