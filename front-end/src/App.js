@@ -21,7 +21,6 @@ const App = props => {
         <Header />
         <main className="App-main">
           <Routes>
-            {/* a route to see the favorites */}
             <Route path="/" element={<Home />} />
             <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="/team-stats" element={<TeamStats />} />
