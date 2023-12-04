@@ -1,36 +1,69 @@
+/* Footer.css */
+
 .footer {
-    background-color: #1a1a1a; 
+    background-color: #333;
     color: white;
-    text-align: center;
-    padding: 20px;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: relative; /* Set position context for absolute positioning of feedback form */
 }
 
 .footer-content {
-    margin: auto;
-    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
 }
 
-.footer-links {
-    list-style: none;
+.footer-links p,
+.footer-links a {
+    margin: 0;
     padding: 0;
-}
-
-.footer-links li {
-    display: inline;
-    margin: 0 10px;
 }
 
 .footer-links a {
     color: white;
     text-decoration: none;
-    transition: color 0.3s;
+    margin-right: 10px; /* Add some space between the links */
 }
 
-.footer-links a:hover {
-    color: #1e90ff;
+.footer-feedback {
+    position: absolute;
+    right: 20px; /* Position the feedback form at the right side */
+    display: flex;
+    align-items: center;
+}
+
+.footer-feedback input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px; /* Space between input and button */
+}
+
+.footer-feedback button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #1e90ff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.footer-feedback button:hover {
+    background-color: #4169e1;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-feedback {
+        position: static; /* Reset positioning on smaller screens */
+        margin-top: 10px; /* Add some space above on smaller screens */
+    }
 }
 
 
