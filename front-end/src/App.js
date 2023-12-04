@@ -12,6 +12,7 @@ import Teams from './Teams'; // Import the Teams component
 import Players from './Players'; // Import the Players component
 import Games from './components/game.mjs';
 import Auth from './Auth';
+import Footer from './Footer';
 
 const App = props => {
   return (
@@ -33,6 +34,7 @@ const App = props => {
             <Route path="/auth" element={<Auth />} />
           </Routes>
         </main>
+        <Footer />
       </Router>
     </div>
   )
