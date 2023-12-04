@@ -36,7 +36,6 @@ const FavoritesPage = () => {
         }
     }, []);
 
-    
 
 
     const fetchPlayerStats = async (playerId) => {
