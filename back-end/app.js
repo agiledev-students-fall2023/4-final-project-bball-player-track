@@ -16,6 +16,7 @@ const mongoose = require("mongoose")
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const User = require("./models/User.js")
 
+
 const username = encodeURIComponent(process.env.DB_USERNAME);
 const password = encodeURIComponent(process.env.DB_PASSWORD);
 const uri = `mongodb+srv://${username}:${password}@bballplayertrack.yldebfu.mongodb.net/?retryWrites=true&w=majority`;
@@ -66,12 +67,89 @@ app.get("/", async (req, res) => {
   }
 });
 
+router.get('/searchPlayer', async (req, res) => {
+  const searchTerm = req.query.query;
+
+  try {
+    const response = await axios.get(`https://www.balldontlie.io/api/v1/players?search=${searchTerm}`);
+    res.json(response.data.data);
+  } catch (error) {
+    console.error('Error searching players:', error);
+    res.status(500).json({ message: 'Error searching players' });
+  }
+});
+
+app.post('/user/:userId/addFavorite', async (req, res) => {
+  const { userId } = req.params;
+  const { playerId } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+    const isAlreadyFavorite = user.favorites.includes(playerId);
+    if (isAlreadyFavorite) {
+      return res.status(400).send('Player is already in favorites');
+    }
+
+    user.favorites.push(playerId);
+    await user.save();
+
+    res.status(200).send('Player added to favorites');
+  } catch (error) {
+    console.error('Error adding favorite:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+app.get('/user/:userId/favorites', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const favorites = user.favorites;
+
+    res.status(200).json(favorites);
+  } catch (error) {
+    console.error('Error fetching favorites:', error);
+    res.status(500).json({ message: 'Error fetching favorites' });
+  }
+});
+app.delete('/user/:userId/removeFavorite', async (req, res) => {
+  const { userId } = req.params;
+  const { playerId } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    const playerIdIndex = user.favorites.findIndex(id => id.toString() === playerId.toString());
+    if (playerIdIndex === -1) {
+      return res.status(404).send('Favorite player not found in user favorites');
+    }
+
+    user.favorites.splice(playerIdIndex, 1);
+    await user.save();
+
+    res.status(200).send('Favorite player removed');
+  } catch (error) {
+    console.error('Error removing favorite:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+module.exports = router;
 
 app.get('/favorites', async (req, res) => {
   try {
-    // Fetch player stats from the API
     const response = await axios.get('https://www.balldontlie.io/api/v1/stats', {
-      // Additional parameters can be added here to filter the stats as needed
     });
 
     // Check if the API returned a list of player stats
@@ -94,8 +172,6 @@ app.get('/favorites', async (req, res) => {
       // Shuffle the array and pick the first 10 items
       const shuffledStats = formattedPlayerStats.sort(() => 0.5 - Math.random());
       const selectedStats = shuffledStats.slice(0, 10);
-
-      // Send the selected stats to the front end
       res.json(selectedStats);
     } else {
       res.status(404).json({ message: 'No player stats found' });
@@ -105,6 +181,8 @@ app.get('/favorites', async (req, res) => {
     res.status(500).json({ message: 'Error fetching player stats' });
   }
 });
+
+
 app.get('/api/teams/stats', async (req, res) => {
   try {
     const response = await axios.get('https://www.balldontlie.io/api/v1/teams');
@@ -360,7 +438,7 @@ app.post('/api/teamplayer', async (req, res) => {
     const Stats = await TeamPlayerStat.find({ Name: { $in: playerNames } });
     const lastStat = await TeamPlayerStat.findOne({ Name: { $in: playerNames } }).sort({ lastUpdated: -1 });
     if (lastStat && new Date() - lastStat.lastUpdated < lastUpdateThreshold) {
-      for (let i = 0; i < 18; i ++){
+      for (let i = 0; i < 18; i++) {
         const playerData = Stats[i];
 
         if (playerData) {
@@ -376,11 +454,11 @@ app.post('/api/teamplayer', async (req, res) => {
             To: playerData.To,
             Pf: playerData.Pf,
             lastUpdated: playerData.lastUpdated
-            });
+          });
         }
-        
+
       }
-      return res.json (teamPlayerData);
+      return res.json(teamPlayerData);
     }
     const response = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?player_ids[]=${playerIDs[0]}&player_ids[]=${playerIDs[1]}&player_ids[]=${playerIDs[2]}&player_ids[]=${playerIDs[3]}&player_ids[]=${playerIDs[4]}&player_ids[]=${playerIDs[5]}&player_ids[]=${playerIDs[6]}&player_ids[]=${playerIDs[7]}&player_ids[]=${playerIDs[8]}&player_ids[]=${playerIDs[9]}&player_ids[]=${playerIDs[10]}&player_ids[]=${playerIDs[11]}&player_ids[]=${playerIDs[12]}&player_ids[]=${playerIDs[13]}&player_ids[]=${playerIDs[14]}&player_ids[]=${playerIDs[15]}&player_ids[]=${playerIDs[16]}&player_ids[]=${playerIDs[17]}`);
 
@@ -409,7 +487,7 @@ app.post('/api/teamplayer', async (req, res) => {
     await TeamPlayerStat.insertMany(teamPlayerData);
     res.json(teamPlayerData);
 
-  
+
   } catch (error) {
     console.error('Error fetching player stats: ', error);
     res.status(500).json({ message: 'Error fetching player stats ' });

@@ -13,6 +13,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    favorites: [String]
 })
 
 UserSchema.pre("save", function (next) {
