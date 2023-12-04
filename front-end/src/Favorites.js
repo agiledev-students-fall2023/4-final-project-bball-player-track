@@ -37,7 +37,6 @@ const FavoritesPage = () => {
     }, []);
 
 
-
     const fetchPlayerStats = async (playerId) => {
         try {
             const response = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?player_ids[]=${playerId}`);
