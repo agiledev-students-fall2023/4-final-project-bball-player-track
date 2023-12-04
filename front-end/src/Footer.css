@@ -65,3 +65,27 @@
         margin-top: 10px; /* Add some space above on smaller screens */
     }
 }
+
+
+.footer-feedback {
+    gap: 10px;
+}
+
+.footer-feedback input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.footer-feedback button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #1e90ff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.footer-feedback button:hover {
+    background-color: #4169e1;
+}

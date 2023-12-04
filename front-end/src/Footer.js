@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Footer.css'; // Make sure this points to the correct CSS file
+import './Footer.css';
 
 const Footer = () => {
     const [feedback, setFeedback] = useState('');
@@ -9,29 +9,29 @@ const Footer = () => {
     };
 
     const handleFeedbackSubmit = () => {
-        // Implement the logic to send feedback here
         console.log(`Feedback submitted: ${feedback}`);
-        setFeedback(''); // Clear the input after submission
+        setFeedback('');
     };
 
     return (
         <footer className="footer">
             <div className="footer-content">
                 <p>&copy; {new Date().getFullYear()} BBall Player Tracker. All rights reserved.</p>
-                <div className="footer-links">
-                    <p>Sites you may find interesting:</p>
-                    <a href="https://www.nba.com">NBA Official Site</a>
-                    <a href="https://www.euroleague.net">EuroLeague Basketball</a>
-                    <a href="https://www.fiba.basketball">FIBA Basketball</a>
-                    <a href="https://www.ncaa.com/sports/basketball-men/d1">NCAA Men's Basketball</a>
-                </div>
+                {/* <p>Sites you may find interesting:</p>
+                <ul className="footer-links">
+                    <li><a href="https://www.nba.com" target="_blank" rel="noopener noreferrer">NBA Official Site</a></li>
+                    <li><a href="https://www.euroleague.net" target="_blank" rel="noopener noreferrer">EuroLeague Basketball</a></li>
+                    <li><a href="https://www.fiba.basketball" target="_blank" rel="noopener noreferrer">FIBA Basketball</a></li>
+                    <li><a href="https://www.ncaa.com/sports/basketball-men/d1" target="_blank" rel="noopener noreferrer">NCAA Men's Basketball</a></li>
+                </ul> */}
             </div>
             <div className="footer-feedback">
-                <input 
-                    type="text" 
-                    value={feedback} 
-                    onChange={handleFeedbackChange} 
-                    placeholder="Help improve our website"
+                <p>Help improve our website!</p>
+                <input
+                    type="text"
+                    value={feedback}
+                    onChange={handleFeedbackChange}
+                    placeholder="Your feedback"
                 />
                 <button onClick={handleFeedbackSubmit}>Send</button>
             </div>
