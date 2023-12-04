@@ -12,6 +12,7 @@ import Teams from './Teams'; // Import the Teams component
 import Players from './Players'; // Import the Players component
 import Games from './components/game.mjs';
 import Auth from './Auth';
+import Footer from './Footer';
 
 const App = props => {
   return (
@@ -20,7 +21,6 @@ const App = props => {
         <Header />
         <main className="App-main">
           <Routes>
-            {/* a route to see the favorites */}
             <Route path="/" element={<Home />} />
             <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="/team-stats" element={<TeamStats />} />
@@ -33,6 +33,7 @@ const App = props => {
             <Route path="/auth" element={<Auth />} />
           </Routes>
         </main>
+        <Footer />
       </Router>
     </div>
   )
