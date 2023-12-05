@@ -401,7 +401,6 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
     const lastUpdateThreshold = 24 * 60 * 60 * 1000;
 
     let team = await PlayersOnTeam.findOne ({teamName: teamName});
-    console.log ('team from database:', team);
 
 
 
@@ -413,7 +412,6 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
           playerId: team.Players[i].playerId
         })
       }
-      console.log (playersOnTeam);
       return res.json (playersOnTeam);
     
     }
@@ -464,7 +462,6 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
     await PlayersOnTeam.findOneAndUpdate({ teamName: teamName }, {teamName: teamName, Players: playersOnTeam, lastUpdated: new Date() });
 
     res.json(playersOnTeam);
-    console.log (playersOnTeam);
 
 
 
@@ -486,7 +483,6 @@ const TeamPlayerStat = require("./models/TeamPlayerStat.js");
 
 app.post('/api/teamplayer', async (req, res) => {
   const { playerNames, playerLastNames, playerIDs } = req.body;
-  console.log (playerIDs);
 
   try {
     const lastUpdateThreshold = 24 * 60 * 60 * 1000;
@@ -526,7 +522,6 @@ app.post('/api/teamplayer', async (req, res) => {
         }
 
       }
-      console.log ("from db: ", teamPlayerData);
       return res.json(teamPlayerData);
     }
     const response = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?player_ids[]=${playerIDs[0]}&player_ids[]=${playerIDs[1]}&player_ids[]=${playerIDs[2]}&player_ids[]=${playerIDs[3]}&player_ids[]=${playerIDs[4]}&player_ids[]=${playerIDs[5]}&player_ids[]=${playerIDs[6]}&player_ids[]=${playerIDs[7]}&player_ids[]=${playerIDs[8]}&player_ids[]=${playerIDs[9]}&player_ids[]=${playerIDs[10]}&player_ids[]=${playerIDs[11]}&player_ids[]=${playerIDs[12]}&player_ids[]=${playerIDs[13]}&player_ids[]=${playerIDs[14]}&player_ids[]=${playerIDs[15]}&player_ids[]=${playerIDs[16]}&player_ids[]=${playerIDs[17]}`);
@@ -562,10 +557,9 @@ app.post('/api/teamplayer', async (req, res) => {
     });
     await TeamPlayerStat.insertMany(teamPlayerData);
     
-    console.log (teamPlayerData);
+    
 
     res.json(teamPlayerData);
-    console.log (teamPlayerData);
 
 
   } catch (error) {
