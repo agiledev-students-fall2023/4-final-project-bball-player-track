@@ -42,3 +42,21 @@ th {
 }
 
 /* Adjust margins or paddings as needed */
+
+#topContainer {
+    background-image: url(images/mainBackground.webp);
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    justify-content: center;
+    padding-bottom: 50px;
+    max-width: 100%;
+  }
+  
+  #topDiv {
+    justify-content: center;
+    display: flex;
+  }
+  
