@@ -22,7 +22,6 @@ const authenticationRouter = () => {
       }
       const { username, password } = req.body;
 
-
       try {
         let user = await User.findOne({ username }).exec();
 

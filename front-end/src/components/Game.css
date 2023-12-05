@@ -15,13 +15,14 @@ table td {
 
 }
 
+/*
 table td:nth-child(2n) {
     background-color: #250a44;
 }
 
 table td:nth-child(3) {
     background-color: rgb(92, 202, 224);
-}
+}*/
 
 th, td {
     border: 1px solid #ddd;
@@ -40,5 +41,4 @@ th {
     background-color: rgb(70, 113, 165);
 
 }
-
-/* Adjust margins or paddings as needed */
+  
