@@ -2,6 +2,7 @@ const mongoose = require ('mongoose')
 
 const teamPlayerStatSchema = new mongoose.Schema({
     Name: String,
+    LastName: String,
     Gp: Number,
     Min: String,
     Pts: Number,

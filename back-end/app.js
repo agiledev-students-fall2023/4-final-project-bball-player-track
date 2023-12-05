@@ -386,13 +386,40 @@ app.get('/api/players/stats', async (req, res) => {
   }
 });
 
+const PlayersOnTeam = require("./models/PlayersOnTeam.js");
 
 app.get('/api/playersonteam/:teamName', async (req, res) => {
+
+  
   const teamName = req.params.teamName.slice(1);
 
 
 
   try {
+
+    let playersOnTeam = [];
+    const lastUpdateThreshold = 24 * 60 * 60 * 1000;
+
+    let team = await PlayersOnTeam.findOne ({teamName: teamName});
+
+
+
+    if (team && team.Players && new Date() - team.lastUpdated < lastUpdateThreshold){
+      for (let i=0; i < team.Players.length; i ++){
+        playersOnTeam.push({
+          playerName: team.Players[i].playerName,
+          playerLastName: team.Players[i].playerLastName,
+          playerId: team.Players[i].playerId
+        })
+      }
+      return res.json (playersOnTeam);
+    
+    }
+
+    team = await PlayersOnTeam.create ({teamName: teamName, Players: [], lastUpdated: new Date() });
+
+
+
     const currentDate = new Date();
     const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
     const currentDay = String(currentDate.getDate()).padStart(2, '0');
@@ -408,7 +435,7 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
 
     const firstResponse = await axios.get(`https://www.balldontlie.io/api/v1/stats?per_page=100&start_date=${oneWeekAgoFinal}&end_date=${currentDateFinal}`);
     const totalPages = firstResponse.data.meta.total_pages;
-    let playersOnTeam = [];
+    
 
     for (let page = 1; page <= totalPages; page++) {
       const currentResponse = await axios.get(`https://www.balldontlie.io/api/v1/stats?per_page=100&start_date=${oneWeekAgoFinal}&end_date=${currentDateFinal}&page=${page}`);
@@ -422,6 +449,7 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
           if (!playerSeenAlready) {
             playersOnTeam.push({
               playerName: item.player.first_name,
+              playerLastName: item.player.last_name,
               playerId: item.player.id
             })
           }
@@ -430,6 +458,8 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
 
     }
 
+
+    await PlayersOnTeam.findOneAndUpdate({ teamName: teamName }, {teamName: teamName, Players: playersOnTeam, lastUpdated: new Date() });
 
     res.json(playersOnTeam);
 
@@ -452,14 +482,24 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
 const TeamPlayerStat = require("./models/TeamPlayerStat.js");
 
 app.post('/api/teamplayer', async (req, res) => {
-  const { playerNames, playerIDs } = req.body;
+  const { playerNames, playerLastNames, playerIDs } = req.body;
 
   try {
     const lastUpdateThreshold = 24 * 60 * 60 * 1000;
     let teamPlayerData = [];
 
-    const Stats = await TeamPlayerStat.find({ Name: { $in: playerNames } });
-    const lastStat = await TeamPlayerStat.findOne({ Name: { $in: playerNames } }).sort({ lastUpdated: -1 });
+    const Stats = await TeamPlayerStat.find({
+      $and: [
+        {Name: { $in: playerNames }},
+        {LastName: {$in: playerLastNames}}
+      ] 
+    });
+
+    const lastStat = await TeamPlayerStat.findOne({
+        Name: { $in: playerNames },
+        LastName: {$in: playerLastNames}
+    }).sort({ lastUpdated: -1 });
+
     if (lastStat && new Date() - lastStat.lastUpdated < lastUpdateThreshold) {
       for (let i = 0; i < 18; i++) {
         const playerData = Stats[i];
@@ -467,6 +507,7 @@ app.post('/api/teamplayer', async (req, res) => {
         if (playerData) {
           teamPlayerData.push({
             Name: playerData.Name,
+            LastName: playerData.LastName,
             Gp: playerData.Gp,
             Min: playerData.Min,
             Pts: playerData.Pts,
@@ -485,13 +526,14 @@ app.post('/api/teamplayer', async (req, res) => {
     }
     const response = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?player_ids[]=${playerIDs[0]}&player_ids[]=${playerIDs[1]}&player_ids[]=${playerIDs[2]}&player_ids[]=${playerIDs[3]}&player_ids[]=${playerIDs[4]}&player_ids[]=${playerIDs[5]}&player_ids[]=${playerIDs[6]}&player_ids[]=${playerIDs[7]}&player_ids[]=${playerIDs[8]}&player_ids[]=${playerIDs[9]}&player_ids[]=${playerIDs[10]}&player_ids[]=${playerIDs[11]}&player_ids[]=${playerIDs[12]}&player_ids[]=${playerIDs[13]}&player_ids[]=${playerIDs[14]}&player_ids[]=${playerIDs[15]}&player_ids[]=${playerIDs[16]}&player_ids[]=${playerIDs[17]}`);
 
-
     for (let i = 0; i < 18; i++) {
       for (let j = 0; j < response.data.data.length; j++) {
-
-        if (playerIDs[i] === response.data.data[j].player_id) {
+        console.log ("hello");
+        if (String(playerIDs[i]) === String(response.data.data[j].player_id)) {
+          console.log ("loop entered");
           teamPlayerData.push({
             Name: playerNames[i],
+            LastName: playerLastNames[i],
             Gp: response.data.data[j].games_played,
             Min: response.data.data[j].min,
             Pts: response.data.data[j].pts,
@@ -500,14 +542,23 @@ app.post('/api/teamplayer', async (req, res) => {
             Stl: response.data.data[j].stl,
             Blk: response.data.data[j].blk,
             To: response.data.data[j].turnover,
-            Pf: response.data.data[j].pf
+            Pf: response.data.data[j].pf,
+            lastUpdated: new Date()
           })
         }
       }
     }
 
-    await TeamPlayerStat.deleteMany({});
+    await TeamPlayerStat.deleteMany({ 
+      $and: [
+        {Name: { $in: playerNames }},
+        {LastName: {$in: playerLastNames}}
+      ] 
+    });
     await TeamPlayerStat.insertMany(teamPlayerData);
+    
+    
+
     res.json(teamPlayerData);
 
 
