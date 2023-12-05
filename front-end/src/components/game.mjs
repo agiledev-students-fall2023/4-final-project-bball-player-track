@@ -8,9 +8,8 @@ const Game = (props) => {
     const [data, setData] = useState([]);
 
     const options = {
-        
         params: {
-        seasons: [2023,2022,1996]
+        seasons: [2023,2022,1996,1998]
         }
     };
 

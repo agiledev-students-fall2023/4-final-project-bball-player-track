@@ -272,7 +272,7 @@ app.get("/games", async (req, res) => {
     const options = {
       /*
       params: {
-      seasons: [2023,2022,1998]
+      seasons: [2023,2022,1998,1997,2000]
       }*/
     };
 
