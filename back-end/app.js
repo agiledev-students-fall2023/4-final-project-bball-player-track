@@ -478,6 +478,104 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
 
 })
 
+const PlayerSeasonStat= require("./models/PlayerSeasonStat.js");
+
+app.get('/api/playerstatsbyseason/:fullName', async (req, res) => {
+
+  
+  const fullName = req.params.fullName.slice(1);
+  const [firstName, lastName] = fullName.split('%');
+
+
+
+  try {
+
+    let playerStats = [];
+    const lastUpdateThreshold = 24 * 60 * 60 * 1000 * 50;
+
+    await PlayerSeasonStat.deleteMany ({fullName: fullName});
+    let stats = await PlayerSeasonStat.findOne ({fullName: fullName});
+
+    console.log (stats);
+
+    if (stats && stats.Seasons && new Date() - stats.lastUpdated < lastUpdateThreshold){
+    
+      for (let i=0; i < stats.Seasons.length; i ++){
+        playerStats.push({
+          Season: stats.Seasons[i].Season,
+          Gp: stats.Seasons[i].Gp,
+          Min: stats.Seasons[i].Min,
+          Pts: stats.Seasons[i].Pts,
+          Reb: stats.Seasons[i].Reb,
+          Ast: stats.Seasons[i].Ast,
+          Stl: stats.Seasons[i].Stl,
+          Blk: stats.Seasons[i].Blk,
+          To: stats.Seasons[i].To,
+          Pf: stats.Seasons[i].Pf
+        })
+      }
+      return res.json (playerStats);
+    
+    }
+    console.log ("got to here");
+
+    await PlayerSeasonStat.create ({fullName: fullName, Seasons: [], lastUpdated: new Date() });
+
+
+
+
+    const firstResponse = await axios.get(`https://www.balldontlie.io/api/v1/players?search=${firstName}`);
+    const firstData = firstResponse.data.data;
+
+
+    let playerId = 0;
+  
+    for (let i = 0; i < firstData.length; i ++){
+      let currentData = firstData[i];
+      if (currentData.first_name === firstName && currentData.last_name === lastName){
+        playerId = currentData.id;
+      }
+    }
+
+    console.log (playerId);
+
+    let seasons = [2023, 2022, 2021, 2020, 2019, 2018]
+
+    for (let k = 0; k < 6; k++) {
+      const currentSeasonResponse = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?season=${seasons[k]}&player_ids[]=${playerId}`);
+      const currentData = currentSeasonResponse.data;
+      console.log (currentData);
+    
+      if (currentData.data[0]!= null){
+        playerStats.push({
+          Season: currentData.data[0].season,
+          Gp: currentData.data[0].games_played,
+          Min: currentData.data[0].min,
+          Pts: currentData.data[0].pts,
+          Reb: currentData.data[0].reb,
+          Ast: currentData.data[0].ast,
+          Stl: currentData.data[0].stl,
+          Blk: currentData.data[0].blk,
+          To: currentData.data[0].turnover,
+          Pf: currentData.data[0].pf
+        })
+      }
+
+    }
+
+
+    console.log (playerStats);
+    await PlayerSeasonStat.findOneAndUpdate({ fullName: fullName }, {fullName: fullName, Seasons: playerStats, lastUpdated: new Date() });
+
+    res.json(playerStats);
+
+  } catch (error) {
+    console.error('Error fetching team players: ', error);
+    res.status(500).json({ message: 'Error fetching team players ' });
+  }
+
+})
+
 
 const TeamPlayerStat = require("./models/TeamPlayerStat.js");
 
@@ -528,9 +626,7 @@ app.post('/api/teamplayer', async (req, res) => {
 
     for (let i = 0; i < 18; i++) {
       for (let j = 0; j < response.data.data.length; j++) {
-        console.log ("hello");
         if (String(playerIDs[i]) === String(response.data.data[j].player_id)) {
-          console.log ("loop entered");
           teamPlayerData.push({
             Name: playerNames[i],
             LastName: playerLastNames[i],

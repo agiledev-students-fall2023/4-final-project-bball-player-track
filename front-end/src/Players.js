@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Players.css';
-
+import { Link } from 'react-router-dom';
 const Players = () => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -47,7 +47,11 @@ const Players = () => {
                     {data.length > 0 ? (
                         data.map((player, index) => (
                             <tr key={index}>
-                                <td>{player.fullName}</td>
+                                <td>
+                                <Link to={`/player-stats/${player.fullName}`}>
+                                    {player.fullName}
+                                </Link> 
+                                </td>
                                 <td>{player.ppg}</td>
                                 <td>{player.apg}</td>
                                 <td>{player.spg}</td>
