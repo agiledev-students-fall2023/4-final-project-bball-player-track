@@ -47,11 +47,7 @@ const Players = () => {
                     {data.length > 0 ? (
                         data.map((player, index) => (
                             <tr key={index}>
-                                <td>
-                                <Link to={`/player-stats/${player.fullName}`}>
-                                    {player.fullName}
-                                </Link> 
-                                </td>
+                                <td>{player.fullName}</td>
                                 <td>{player.ppg}</td>
                                 <td>{player.apg}</td>
                                 <td>{player.spg}</td>
