@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 const PlayerStats = () => {
     const {PlayerName} = useParams()
-    const [firstName, lastName] = PlayerName.split('%');
+    const [firstName, lastName] = PlayerName.split(' ');
 
     console.log (PlayerName);
     const [stats, setPlayerStats] = useState([]);

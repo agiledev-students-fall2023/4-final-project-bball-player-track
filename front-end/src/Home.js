@@ -32,7 +32,7 @@ const Home = props => {
                     <ul>
                         {players.map((player, index) => (
                             <li key={index}>
-                                <Link to={`player-stats/${player.id}`} className="player">
+                                <Link to={`player-stats/${player.first_name} ${player.last_name}`} className="player">
                                     <span className="player-name">{player.first_name} {player.last_name}</span>
                                 </Link>
                             </li>
@@ -44,7 +44,7 @@ const Home = props => {
                     <ul>
                         {teams.map((team, index) => (
                             <li key={index}>
-                                <Link to={`team-stats/${team.id}`} className="player">
+                                <Link to={`team-stats/${team.full_name}`} className="player">
                                     <span className="player-name">{team.full_name}</span>
                                 </Link>
                             </li>
