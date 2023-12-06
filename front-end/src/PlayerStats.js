@@ -1,4 +1,7 @@
 import './PlayerStats.css'
+import { useParams } from 'react-router-dom';
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -6,25 +9,26 @@ import { Link } from 'react-router-dom';
 
 
 const PlayerStats = () => {
-    const [gamedata, setData] = useState([]);
-    
-    useEffect(() => {
-    const fetchData = async () => {
-    const result = await axios.get('https://my.api.mockaroo.com/PlayerStatsGame.json?key=8e50b960');
-    setData(result.data);
-    };
-    fetchData();
-    }, []);
+    const {PlayerName} = useParams()
+    const [firstName, lastName] = PlayerName.split('%');
 
-    const [seasondata, setData2] = useState([]);
+    console.log (PlayerName);
+    const [stats, setPlayerStats] = useState([]);
     
     useEffect(() => {
-    const fetchData = async () => {
-    const result = await axios.get('https://my.api.mockaroo.com/playerStatsSeason.json?key=8e50b960');
-    setData2(result.data);
-    };
-    fetchData();
-    }, []);
+    const fetchPlayerStats = async () => {
+        const firstresult = await axios.get(`http://localhost:8080/api/playerstatsbyseason/:${encodeURIComponent(PlayerName)}`);
+        
+
+
+
+        setPlayerStats(firstresult.data);
+        };
+    fetchPlayerStats();
+    }, [PlayerName]);
+
+
+
 
 
 
@@ -38,19 +42,11 @@ const PlayerStats = () => {
 
             
             
-            <h2>Player Name Here</h2>
+            <h2>{firstName + " " + lastName}</h2>
             
 
-            <img
-            src="https://picsum.photos/200/300"
-            alt=" "
-            width="100"
-            height="100"
-            />
-            
-
-
-            <h2>Stats by Game</h2>
+{/*
+          <h2>Stats by Game</h2>
                 <table>
                     <thead>
                         <tr>
@@ -92,6 +88,8 @@ const PlayerStats = () => {
 
                     </tbody>
                 </table>
+                    */}
+
 
             <h2>Stats by Season </h2>
                 <table>
@@ -99,41 +97,31 @@ const PlayerStats = () => {
                         <tr>
                             <th>SEASON</th>
                             <th>GP</th>
-                            <th>GS</th>
                             <th>MIN</th>
                             <th>PTS</th>
-                            <th>OR</th>
-                            <th>DR</th>
                             <th>REB</th>
                             <th>AST</th>
                             <th>STL</th>
                             <th>BLK</th>
                             <th>TO</th>
                             <th>PF</th>
-                            <th>AST/TO</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {seasondata.map((season, index) => (
+                    {stats.map((season, index) => (
                         <tr key={index}>
-                            <td>{season["[Season]"]}</td>
-                            <td>{season["[Gp]"]}</td>
-                            <td>{season["[Gs]"]}</td>
-                            <td>{season["[Min]"]}</td>
-                            <td>{season["[Pts]"]}</td>
-                            <td>{season["[Or]"]}</td>
-                            <td>{season["[Dr]"]}</td>
-                            <td>{season["[Reb]"]}</td>
-                            <td>{season["[Ast]"]}</td>
-                            <td>{season["[Stl]"]}</td>
-                            <td>{season["[Blk]"]}</td>
-                            <td>{season["[To]"]}</td>
-                            <td>{season["[Pf]"]}</td>
-                            <td>{season["[Ast/To]"]}</td>
-
+                            <td>{season.Season}</td>
+                            <td>{season.Gp}</td>
+                            <td>{season.Min}</td>
+                            <td>{season.Pts}</td>
+                            <td>{season.Reb}</td>
+                            <td>{season.Ast}</td>
+                            <td>{season.Stl}</td>
+                            <td>{season.Blk}</td>
+                            <td>{season.To}</td>
+                            <td>{season.Pf}</td>
                         </tr>
                     ))}
-
                     </tbody>
                 </table>
 

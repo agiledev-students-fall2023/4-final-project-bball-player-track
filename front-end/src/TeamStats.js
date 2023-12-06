@@ -108,7 +108,7 @@ const TeamStats = () => {
                     {playerStats.map((player, index) => (
                         <tr key={index}>
                             <td>
-                            <Link to={`/player-stats`}>
+                            <Link to={`/player-stats/${player.Name}%${player.LastName}`}>
                                     {player.Name + " " + player.LastName}
                             </Link>
                             </td>

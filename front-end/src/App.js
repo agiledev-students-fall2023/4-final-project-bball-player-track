@@ -26,7 +26,7 @@ const App = props => {
             <Route path="/team-stats" element={<TeamStats />} />
             <Route path="/player-stats" element={<PlayerStats />} />
             <Route path="/team-stats/:teamid" element={<TeamStats />} />
-            <Route path="/player-stats/:teamid" element={<PlayerStats />} />
+            <Route path="/player-stats/:PlayerName" element={<PlayerStats />} />
             <Route path = "/games" element = {<Games/>}/>
             <Route path="/teams" element={<Teams />} /> {/* Route for Teams */}
             <Route path="/players" element={<Players />} /> {/* Route for Players */}
