@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Favorites.css';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 
 const FavoritesPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -176,7 +176,11 @@ const FavoritesPage = () => {
                 <tbody>
                     {combinedFavorites.map((player, index) => (
                         <tr key={index}>
-                            <td>{player.name}</td>
+                            <td>
+                            <Link to={`/player-stats/${player.name}`}>
+                                    {player.name}
+                            </Link>
+                            </td>
                             <td>{player.stats?.pts || 'N/A'}</td>
                             <td>{player.stats?.ast || 'N/A'}</td>
                             <td>{player.stats?.stl || 'N/A'}</td>
