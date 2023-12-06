@@ -493,10 +493,8 @@ app.get('/api/playerstatsbyseason/:fullName', async (req, res) => {
     let playerStats = [];
     const lastUpdateThreshold = 24 * 60 * 60 * 1000 * 50;
 
-    await PlayerSeasonStat.deleteMany ({fullName: fullName});
     let stats = await PlayerSeasonStat.findOne ({fullName: fullName});
 
-    console.log (stats);
 
     if (stats && stats.Seasons && new Date() - stats.lastUpdated < lastUpdateThreshold){
     
@@ -514,10 +512,10 @@ app.get('/api/playerstatsbyseason/:fullName', async (req, res) => {
           Pf: stats.Seasons[i].Pf
         })
       }
+
       return res.json (playerStats);
     
     }
-    console.log ("got to here");
 
     await PlayerSeasonStat.create ({fullName: fullName, Seasons: [], lastUpdated: new Date() });
 
@@ -537,14 +535,12 @@ app.get('/api/playerstatsbyseason/:fullName', async (req, res) => {
       }
     }
 
-    console.log (playerId);
 
     let seasons = [2023, 2022, 2021, 2020, 2019, 2018]
 
     for (let k = 0; k < 6; k++) {
       const currentSeasonResponse = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?season=${seasons[k]}&player_ids[]=${playerId}`);
       const currentData = currentSeasonResponse.data;
-      console.log (currentData);
     
       if (currentData.data[0]!= null){
         playerStats.push({
@@ -564,7 +560,6 @@ app.get('/api/playerstatsbyseason/:fullName', async (req, res) => {
     }
 
 
-    console.log (playerStats);
     await PlayerSeasonStat.findOneAndUpdate({ fullName: fullName }, {fullName: fullName, Seasons: playerStats, lastUpdated: new Date() });
 
     res.json(playerStats);
