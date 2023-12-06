@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Players.css';
-
+import { Link } from 'react-router-dom';
 const Players = () => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);

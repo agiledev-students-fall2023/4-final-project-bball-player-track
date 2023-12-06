@@ -18,12 +18,17 @@ const TeamStats = () => {
     const fetchPlayerStats = async () => {
         const firstresult = await axios.get(`http://localhost:8080/api/playersonteam/:${teamid}`);
         const playersOnTeam = firstresult.data;
+        
         const playerNames = playersOnTeam.map(player => player.playerName);
+        
+        const playerLastNames = playersOnTeam.map(player => player.playerLastName);
         const playerIds = playersOnTeam.map(player => player.playerId);
         const playerStatResult = await axios.post('http://localhost:8080/api/teamplayer',{
             playerNames: playerNames,
+            playerLastNames: playerLastNames,
             playerIDs: playerIds
         });
+
 
         setPlayerStats(playerStatResult.data);
         };
@@ -103,8 +108,8 @@ const TeamStats = () => {
                     {playerStats.map((player, index) => (
                         <tr key={index}>
                             <td>
-                            <Link to={`/player-stats`}>
-                                    {player.Name}
+                            <Link to={`/player-stats/${player.Name}%${player.LastName}`}>
+                                    {player.Name + " " + player.LastName}
                             </Link>
                             </td>
                             <td>{player.Gp}</td>
