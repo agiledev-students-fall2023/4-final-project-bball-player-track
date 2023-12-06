@@ -11,7 +11,7 @@ table {
     Modifying this modifies each row
 */
 table td {
-    background-color: #440a0a;
+    background-color: #ffffff;
 
 }
 
@@ -37,8 +37,7 @@ th {
 
 }
 
-.games-table {
-    background-color: rgb(70, 113, 165);
-
+.games-select {
+    background:white;
 }
   
