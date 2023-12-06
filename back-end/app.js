@@ -266,36 +266,63 @@ app.get('/api/teams/stats', async (req, res) => {
   }
 });
 
-app.get("/games", async (req, res) => {
+const delay = (ms) => new Promise(res => setTimeout(res, ms));
+
+async function fetchAllGamesForSeason(season) {
+    let allGames = [];
+    let page = 1;
+    let totalPages = 1; // Start with 1 and update based on API response
+
+    do {
+        try {
+            const response = await axios.get(`https://www.balldontlie.io/api/v1/games?per_page=100&seasons[]=${season}&page=${page}`);
+            
+            // Add the new games to our array
+            allGames = allGames.concat(response.data.data);
+
+            // Update total pages based on the response
+            totalPages = response.data.meta.total_pages;
+
+            // Increment the page counter
+            page++;
+
+            // Respect the rate limit (delay for a second to stay under 60 requests/minute)
+            await delay(1000);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            // Handle rate limiting (HTTP 429) or other errors appropriately
+            // Optionally implement a retry mechanism here
+        }
+    } while (page <= totalPages);
+
+    return [allGames, totalPages];
+}
+
+app.get('/api/games', async (req, res) => {
   try {
 
-    const options = {
-      /*
-      params: {
-      seasons: [2023,2022,1998,1997,2000]
-      }*/
-    };
+    const season = req.query.season;
 
     // Fetch player stats from the API
 
-    const response = await axios.get('https://www.balldontlie.io/api/v1/games', options);
+    fetchAllGamesForSeason(season).then(([allGames,totalPages]) => {
 
-    // Check if the API returned a list of player stats
-    if (response.data && response.data.data) {
-      const games = response.data.data;
-      // Process and format the dates
-      const formattedPlayerStats = games.map((game, index) => {
-        const formattedDate = game.date.split('T')[0];
-        game.date = formattedDate;
-        return game;
-      });
+      //Function to split up data in chunks of 100
+    const chunkArray = (array, chunkSize) => {
+      const chunks = [];
+      for (let i = 0; i < array.length; i += chunkSize) {
+        chunks.push(array.slice(i, i + chunkSize));
+      }
+      return chunks;
+    };
+    
+    const chunkedSortedGames = chunkArray(allGames.sort((a, b) => new Date(b.date) - new Date(a.date)).map(game => ({ ...game, date: game.date.split('T')[0] })),100);
 
       // Send the selected stats to the front end
       //console.table(formattedPlayerStats);
-      res.json(formattedPlayerStats);
-    } else {
-      res.status(404).json({ message: 'No player stats found' });
-    }
+      res.json([chunkedSortedGames,totalPages]);
+    });
+
   } catch (error) {
     console.error('Error fetching player stats: ', error);
     res.status(500).json({ message: 'Error fetching player stats' });
