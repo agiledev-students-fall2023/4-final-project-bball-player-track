@@ -16,14 +16,14 @@ const TeamStats = () => {
     
     useEffect(() => {
     const fetchPlayerStats = async () => {
-        const firstresult = await axios.get(`http://localhost:8080/api/playersonteam/:${teamid}`);
+        const firstresult = await axios.get(`http://142.93.185.177:8080/api/playersonteam/:${teamid}`);
         const playersOnTeam = firstresult.data;
         
         const playerNames = playersOnTeam.map(player => player.playerName);
         
         const playerLastNames = playersOnTeam.map(player => player.playerLastName);
         const playerIds = playersOnTeam.map(player => player.playerId);
-        const playerStatResult = await axios.post('http://localhost:8080/api/teamplayer',{
+        const playerStatResult = await axios.post('http://142.93.185.177:8080/api/teamplayer',{
             playerNames: playerNames,
             playerLastNames: playerLastNames,
             playerIDs: playerIds

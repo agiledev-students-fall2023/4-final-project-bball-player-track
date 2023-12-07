@@ -9,7 +9,7 @@ const Players = () => {
     const fetchData = async (forceRefresh = false) => {
         setIsLoading(true);
         try {
-            const result = await axios.get(`http://localhost:8080/api/players/stats${forceRefresh ? '?forceRefresh=true' : ''}`);
+            const result = await axios.get(`http://142.93.185.177/api/players/stats${forceRefresh ? '?forceRefresh=true' : ''}`);
             const sortedData = result.data.sort((a, b) => parseFloat(b.ppg) - parseFloat(a.ppg));
             setData(sortedData);
         } catch (error) {

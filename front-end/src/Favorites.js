@@ -102,7 +102,7 @@ const FavoritesPage = () => {
 
     const addFavorite = async (playerId) => {
         try {
-            const response = await axios.post(`http://localhost:8080/user/${userId}/addFavorite`, { playerId });
+            const response = await axios.post(`http://142.93.185.177/user/${userId}/addFavorite`, { playerId });
             if (response.status === 200) {
                 console.log('Player added to favorites');
                 alert('Player added to favorites');
@@ -121,7 +121,7 @@ const FavoritesPage = () => {
 
     const removeFavorite = async (playerId) => {
         try {
-            await axios.delete(`http://localhost:8080/user/${userId}/removeFavorite`, { data: { playerId } });
+            await axios.delete(`http://142.93.185.177:8080/user/${userId}/removeFavorite`, { data: { playerId } });
             fetchFavorites(); // Refresh favorites after removing
         } catch (error) {
             console.error('Error removing favorite:', error);
@@ -131,7 +131,7 @@ const FavoritesPage = () => {
     const fetchFavorites = async () => {
         if (userId) {
             try {
-                const response = await axios.get(`http://localhost:8080/user/${userId}/favorites`);
+                const response = await axios.get(`http://142.93.185.177:8080/user/${userId}/favorites`);
                 const favoritePlayerIds = response.data;
                 // Fetch player details and stats
                 const playerDetails = await Promise.all(favoritePlayerIds.map(playerId =>
