@@ -29,3 +29,6 @@ cd back-end
 node server.js
 
 Then, in your browser navigate to whatever port the react project is served on(localhost:3000)
+
+# Deployment
+http://142.93.185.177:3000/
