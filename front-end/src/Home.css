@@ -1,3 +1,4 @@
+/* Base styles */
 .players-list, .player-stats {
     flex: 1;
     border: 2px solid black;
@@ -9,49 +10,223 @@
     background-color: rgba(255, 255, 255, 0.7);
 }
 
-.top-players-container{
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    margin: 0 auto;
-    padding: 10px;
-    gap: 20px;
-    background-color: rgba(255, 255, 255, 0.6);
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
 .players-list:hover, .player-stats:hover {
     box-shadow: 0 6px 12px rgba(0,0,0,0.2);
 }
-.top-players-container {
-    display: flex;
-    width: 700px;
-    justify-content: center;
-    align-items: flex-start;
-    margin: 0 auto;
-    padding: 10px;
-    gap: 20px;
+
+.players-list ul {
+    list-style-type: none;
+    padding-left: 10px;
 }
+
+.players-list ul li {
+    margin-bottom: 15px;
+    font-style: italic;
+    font-weight: bold;
+}
+
 .introduction {
-    width: 40%;
-    margin: 50px auto;
+    width: 80%;
+    margin: 30px auto;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     font-weight: bold;
-    font-size: large;
+    font-size: medium;
 }
-.players-list ul {
-    list-style-type: none;
-    padding-left: 10px;
+
+/* Desktop specific styles */
+@media screen and (min-width: 768px) {
+    .top-players-container {
+        display: flex;
+        width: 700px;
+        justify-content: center;
+        align-items: flex-start;
+        margin: 0 auto;
+        padding: 10px;
+        gap: 20px;
+        background-color: rgba(255, 255, 255, 0.6);
+        border-radius: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .introduction {
+        width: 40%;
+        font-size: large;
+    }
+}
+
+/* Mobile specific styles */
+@media screen and (max-width: 767px) {
+    .top-players-container {
+        display: block;
+        width: auto;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .players-list, .player-stats {
+        margin: 5px;
+        padding: 8px;
+    }
+}
+
+
+@media screen and (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { 
+    body {
+        font-size: 110%;
+    }
+
+    .players-list, .player-stats {
+        border-width: 3px;
+    }
+}
+
+@media screen and (max-aspect-ratio: 2/3) {
+    .top-players-container {
+        padding: 5px;
+        gap: 10px;
+    }
+
+    .introduction {
+        margin-top: 10px;
+        padding: 10px;
+    }
+}
+/*Iphone SE*/
+@media screen and (min-device-pixel-ratio: 2) and (min-width: 375px) and (max-height: 667px) {
+    body {
+        font-size: 110%;
+    }
+
+    .players-list, .player-stats {
+        border-width: 3px;
+    }
+}
+
+@media screen and (aspect-ratio: 375/667) {
+    .top-players-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; /* Center items vertically */
+        padding: 5px;
+        gap: 10px;
+        width: 100%; /* Ensure full width */
+        margin: 0 auto; /* Center the container */
+    }
+
+    .introduction {
+        margin-top: 10px;
+        padding: 10px;
+        text-align: center; /* Center the text */
+    }
+    body, html {
+        overflow-x: hidden;
+    }
+    
     
 }
-.players-list ul li {
-    margin-bottom: 15px;
-    font-style: italic;
-    font-weight: bold;
+/*Iphone 12 pro*/
+@media screen and (min-device-pixel-ratio: 2) and (min-width: 390px) and (max-height: 844px) {
+    body {
+        font-size: 115%; /* Slightly larger font for better readability */
+    }
+
+    .players-list, .player-stats {
+        border-width: 3px; /* Maintain the same border width */
+    }
+}
+
+@media screen and (aspect-ratio: 390/844) {
+    .top-players-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; /* Center items vertically */
+        padding: 5px;
+        gap: 10px;
+        width: 100%; /* Ensure full width */
+        margin: 0 auto; /* Center the container */
+    }
+
+    .introduction {
+        margin-top: 10px;
+        padding: 10px;
+        text-align: center; /* Center the text */
+    }
+    body, html {
+        overflow-x: hidden;
+    }
+    
+}
+/*Iphone 14 Pro Max*/
+@media screen and (min-device-pixel-ratio: 2) and (min-width: 430px) and (max-height: 932px) {
+    body {
+        font-size: 118%; 
+        margin: 0; 
+        padding: 0; 
+        box-sizing: border-box; 
+        overflow-x: hidden; 
+    }
+
+    .players-list, .player-stats {
+        border-width: 3px; /* Consistent border width */
+        box-sizing: border-box;
+    }
+}
+
+@media screen and (aspect-ratio: 430/932) {
+    .top-players-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; /* Center items vertically */
+        padding: 5px;
+        gap: 10px;
+        width: 100%; /* Ensure full width */
+        box-sizing: border-box; /* Include padding and borders in width */
+    }
+
+    .introduction {
+        margin-top: 10px;
+        padding: 10px;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: larger; /* Increase the font size */
+    }
+    body, html {
+        overflow-x: hidden;
+    }
+    
+}
+/*iphone XR*/
+@media screen and (aspect-ratio: 414/896) {
+    .top-players-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; /* Center items vertically */
+        padding: 5px;
+        gap: 10px;
+        width: 100%; /* Ensure full width */
+        box-sizing: border-box; /* Include padding and borders in width */
+    }
+
+    .introduction {
+        margin-top: 10px;
+        padding: 10px;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: larger; /* Increase the font size */
+    }
+    body, html {
+        overflow-x: hidden;
+    }
+    
 }
 
 

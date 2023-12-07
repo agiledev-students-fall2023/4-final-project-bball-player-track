@@ -59,7 +59,88 @@ body {
     border-radius: 4px;
     margin-right: 10px;
 }
+@media screen and (min-width: 375px) and (max-height: 667px) {
 
+    .navbar {
+        display: flex; /* Use flexbox to align items */
+        justify-content: space-between; /* Distribute space between items */
+        align-items: center; /* Center items vertically */
+        padding: 2px; /* Adjust padding */
+        flex-wrap: wrap; /* Allow items to wrap if not enough space */
+    }
+
+    .header {
+        font-size: 10px; /* Adjust header font size, 10px is likely too small */
+    }
+
+    .navbar a, .navbar button {
+        font-size: 8px; /* Adjust link/button font size */
+        padding: 2px; /* Adjust padding for better touch targets */
+    }
+
+    .navbar img {
+        width: auto;
+        height: 20px;
+    }
+
+    .login-link, .header-username {
+        padding: 5px; 
+    }
+}
+@media only screen and (min-width: 390px) and (max-height: 844px) {
+    .navbar {
+        display: flex; /* Use flexbox to align items */
+        justify-content: space-between; /* Distribute space between items */
+        align-items: center; /* Center items vertically */
+        padding: 4px; /* Adjust padding */
+        flex-wrap: wrap; /* Allow items to wrap if not enough space */
+    }
+
+    .header {
+        font-size: 20px; /* Adjust header font size, 10px is likely too small */
+    }
+
+    .navbar a, .navbar button {
+        font-size: 16px; /* Adjust link/button font size */
+        padding: 4px; /* Adjust padding for better touch targets */
+    }
+
+    .navbar img {
+        width: auto; /* Adjust logo image width, 10px is likely too small */
+        height: 40px; /* Set a fixed height for your logo */
+    }
+
+    .login-link, .header-username {
+        font-size: 16px; /* Adjust font size */
+        padding: 6px; /* Adjust padding */
+    }
+
+    
+}
+
+
+/* Mobile specific styles */
+@media screen and (max-width: 767px) {
+    .navbar {
+        padding: 10px; /* Reduced padding for mobile */
+    }
+
+    .header {
+        font-size: 20px; /* Slightly reduced font size for mobile */
+    }
+
+    .navbar a, .navbar button {
+        font-size: 16px; /* Slightly reduced font size for mobile */
+    }
+
+    .navbar img {
+        width: 25px; /* Slightly reduced size for mobile */
+    }
+
+    .login-link, .header-username {
+        padding: 5px; /* Adjust padding for mobile */
+    }
+}
 
 
 
