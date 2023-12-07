@@ -168,8 +168,6 @@ app.post('/', body('feedback').not().isEmpty().withMessage('You must input somet
   }
 })
 
-
-
 app.get('/favorites', async (req, res) => {
   try {
     const response = await axios.get('https://www.balldontlie.io/api/v1/stats', {
@@ -204,7 +202,6 @@ app.get('/favorites', async (req, res) => {
     res.status(500).json({ message: 'Error fetching player stats' });
   }
 });
-
 
 app.get('/api/teams/stats', async (req, res) => {
   try {
@@ -302,9 +299,8 @@ app.get('/api/games', async (req, res) => {
   try {
 
     const season = req.query.season;
-
+    
     // Fetch player stats from the API
-
     fetchAllGamesForSeason(season).then(([allGames,totalPages]) => {
 
       //Function to split up data in chunks of 100
@@ -426,8 +422,9 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
 
     let playersOnTeam = [];
     const lastUpdateThreshold = 24 * 60 * 60 * 1000;
-    
+
     let team = await PlayersOnTeam.findOne ({teamName: teamName});
+
 
 
     if (team && team.Players && new Date() - team.lastUpdated < lastUpdateThreshold){
@@ -438,8 +435,6 @@ app.get('/api/playersonteam/:teamName', async (req, res) => {
           playerId: team.Players[i].playerId
         })
       }
-      
-      
       return res.json (playersOnTeam);
     
     }
@@ -512,7 +507,7 @@ app.get('/api/playerstatsbyseason/:fullName', async (req, res) => {
 
   
   const fullName = req.params.fullName.slice(1);
-  const [firstName, lastName] = fullName.split(' ');
+  const [firstName, lastName] = fullName.split('%');
 
 
 
@@ -564,9 +559,9 @@ app.get('/api/playerstatsbyseason/:fullName', async (req, res) => {
     }
 
 
-    let seasons = [2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]
+    let seasons = [2023, 2022, 2021, 2020, 2019, 2018]
 
-    for (let k = 0; k < 14; k++) {
+    for (let k = 0; k < 6; k++) {
       const currentSeasonResponse = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?season=${seasons[k]}&player_ids[]=${playerId}`);
       const currentData = currentSeasonResponse.data;
     
@@ -609,7 +604,6 @@ app.post('/api/teamplayer', async (req, res) => {
     const lastUpdateThreshold = 24 * 60 * 60 * 1000;
     let teamPlayerData = [];
 
-
     const Stats = await TeamPlayerStat.find({
       $and: [
         {Name: { $in: playerNames }},
@@ -623,7 +617,7 @@ app.post('/api/teamplayer', async (req, res) => {
     }).sort({ lastUpdated: -1 });
 
     if (lastStat && new Date() - lastStat.lastUpdated < lastUpdateThreshold) {
-      for (let i = 0; i < 16; i++) {
+      for (let i = 0; i < 18; i++) {
         const playerData = Stats[i];
 
         if (playerData) {
@@ -648,7 +642,7 @@ app.post('/api/teamplayer', async (req, res) => {
     }
     const response = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?player_ids[]=${playerIDs[0]}&player_ids[]=${playerIDs[1]}&player_ids[]=${playerIDs[2]}&player_ids[]=${playerIDs[3]}&player_ids[]=${playerIDs[4]}&player_ids[]=${playerIDs[5]}&player_ids[]=${playerIDs[6]}&player_ids[]=${playerIDs[7]}&player_ids[]=${playerIDs[8]}&player_ids[]=${playerIDs[9]}&player_ids[]=${playerIDs[10]}&player_ids[]=${playerIDs[11]}&player_ids[]=${playerIDs[12]}&player_ids[]=${playerIDs[13]}&player_ids[]=${playerIDs[14]}&player_ids[]=${playerIDs[15]}&player_ids[]=${playerIDs[16]}&player_ids[]=${playerIDs[17]}`);
 
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < 18; i++) {
       for (let j = 0; j < response.data.data.length; j++) {
         if (String(playerIDs[i]) === String(response.data.data[j].player_id)) {
           teamPlayerData.push({
