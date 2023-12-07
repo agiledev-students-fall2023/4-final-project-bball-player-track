@@ -17,7 +17,7 @@ const PlayerStats = () => {
     
     useEffect(() => {
     const fetchPlayerStats = async () => {
-        const firstresult = await axios.get(`http://localhost:8080/api/playerstatsbyseason/:${encodeURIComponent(PlayerName)}`);
+        const firstresult = await axios.get(`http://142.93.185.177:8080/api/playerstatsbyseason/:${encodeURIComponent(PlayerName)}`);
         
 
 

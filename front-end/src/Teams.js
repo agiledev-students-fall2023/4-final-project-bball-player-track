@@ -8,7 +8,7 @@ const Teams = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get('http://localhost:8080/api/teams/stats');
+            const result = await axios.get('http://142.93.185.177:8080/api/teams/stats');
             setData(result.data);
         };
         fetchData();

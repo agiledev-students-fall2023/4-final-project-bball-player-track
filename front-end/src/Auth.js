@@ -28,7 +28,7 @@ const Auth = () => {
 
                 // window.location.href = process.env.REACT_APP_FRONTEND;
 
-                window.location.href = 'http://localhost:3000';
+                window.location.href = '142.93.185.177:3000';
 
             } else {
                 setError(data.message || 'Login failed');

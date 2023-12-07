@@ -16,7 +16,7 @@ const GameTable = (props) => {
     "1961-62", "1960-61", "1959-60", "1958-59", "1957-58", "1956-57", "1955-56", "1954-55", "1953-54", 
     "1952-53", "1951-52", "1950-51", "1949-50", "1948-49", "1947-48", "1946-47"];
 
-    const url = 'http://localhost:8080/api/games';
+    const url = 'http://142.93.185.177:8080/api/games';
     
     const [data, setData] = useState(null);
     const [season,setSeason] = useState("2023");
