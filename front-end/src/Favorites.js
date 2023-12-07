@@ -102,7 +102,7 @@ const FavoritesPage = () => {
 
     const addFavorite = async (playerId) => {
         try {
-            const response = await axios.post(`http://142.93.185.177/user/${userId}/addFavorite`, { playerId });
+            const response = await axios.post(`http://142.93.185.177:8080/user/${userId}/addFavorite`, { playerId });
             if (response.status === 200) {
                 console.log('Player added to favorites');
                 alert('Player added to favorites');
