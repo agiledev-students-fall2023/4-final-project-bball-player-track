@@ -2,6 +2,7 @@ import './Game.css';
 import React, {useState} from 'react';
 import axios from 'axios';
 import Pagination from '@mui/material/Pagination';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const GameTable = (props) => {
 
@@ -18,21 +19,21 @@ const GameTable = (props) => {
     const url = 'http://localhost:8080/api/games';
     
     const [data, setData] = useState(null);
-
     const [season,setSeason] = useState("2023");
-    const [page, setPage] = useState(0);
-
+    const [page, setPage] = useState(1);
     const [maxPage, setMaxPage] = useState(50);
+    const [isLoading, setIsLoading] = useState(true);
 
     const fetchPlayers = async (url) => {
+        setIsLoading(true);
         const response = await axios.get(url,{
             params: {
-                season: season.substring(0,4),
+                season: season.substring(0,4)
             }
         });
         setData(response.data[0]);
         setMaxPage(response.data[1]);
-
+        setIsLoading(false);
     };
     
     //Populate page on first load
@@ -65,6 +66,8 @@ const GameTable = (props) => {
 
             <Pagination count={maxPage} onChange={changePage}color="primary" />
         </form>
+
+        {isLoading && <CircularProgress style = {{'color': 'sky-blue', 'position':'fixed','top':'50%','left':'50%'}}/>}
 
         <table>
             <thead>
